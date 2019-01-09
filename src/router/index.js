@@ -1,22 +1,25 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import PageRouter from './page-router';
 
 const Rank = () => import(/* webpackChunkName: "rank" */ '@/views/rank/rank.vue');
-const Reocmmend = () => import(/* webpackChunkName: "reocmmend" */ '@/views/recommend/recommend.vue');
+const Recommend = () => import(/* webpackChunkName: "recommend" */ '@/views/recommend/recommend.vue');
 const Search = () => import(/* webpackChunkName: "search" */ '@/views/search/search.vue');
 const Singer = () => import(/* webpackChunkName: "singer" */ '@/views/singer/singer.vue');
 
-Vue.use(Router);
+Vue.use(PageRouter);
 
-export default new Router({
+const router = new PageRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [{
+        path: '/',
+        redirect: '/recommend',
+    }, {
         path: '/rank',
         component: Rank,
     }, {
-        path: '/reocmmend',
-        component: Reocmmend,
+        path: '/recommend',
+        component: Recommend,
     }, {
         path: '/search',
         component: Search,
@@ -25,3 +28,15 @@ export default new Router({
         component: Singer,
     }],
 });
+
+router.beforeEach((to, from, next) => {
+    next();
+});
+
+router.onError((res) => {
+    console.log(res);
+});
+
+export default router;
+
+export const PM = router.pm;

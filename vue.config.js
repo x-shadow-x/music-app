@@ -10,7 +10,7 @@ module.exports = {
         sourceMap: true,
     },
     devServer: {
-        port: 8080, // 端口号
+        port: 8881, // 端口号
         host: '0.0.0.0',
     },
     chainWebpack: (config) => {
