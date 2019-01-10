@@ -12,6 +12,11 @@ module.exports = {
             'error',
             4
         ],
+        'prefer-destructuring': ['error', {
+            'VariableDeclarator': {
+                object: false
+            }}
+        ],
         'no-plusplus': [
             'error', {
                 'allowForLoopAfterthoughts': true
