@@ -3,6 +3,8 @@
         <div class="swiper-wrapper">
             <slot></slot>
         </div>
+        <slot name="pagination"></slot>
+        <slot name="navigation"></slot>
     </div>
 </template>
 
@@ -17,12 +19,12 @@ export default {
             default: true,
         },
         autoplay: {
-            type: Boolean,
-            default: true,
-        },
-        interval: {
-            type: Number,
-            default: 14000,
+            type: Object,
+            default: () => ({
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+            }),
         },
     },
     mounted() {
@@ -33,11 +35,32 @@ export default {
 
     methods: {
         _initSwiper() {
-            const mySwiper = new Swiper('.swiper-container', {
+            const pagination = this.$slots.pagination;
+            const navigation = this.$slots.navigation;
+            const swiperOption = {
                 autoplay: this.autoplay,
                 loop: this.loop,
                 interval: this.interval,
-            });
+            };
+
+            if (pagination) {
+                Object.assign(swiperOption, {
+                    pagination: {
+                        el: `.${pagination[0].data.staticClass.replace(/\s/g, '.')}`,
+                    },
+                });
+            }
+
+            if (navigation && navigation.length === 2) {
+                Object.assign(swiperOption, {
+                    navigation: {
+                        nextEl: `.${navigation[0].data.staticClass.replace(/\s/g, '.')}`,
+                        prevEl: `.${navigation[1].data.staticClass.replace(/\s/g, '.')}`,
+                    },
+                });
+            }
+
+            const mySwiper = new Swiper('.swiper-container', swiperOption);
             return mySwiper;
         },
     },
@@ -46,11 +69,19 @@ export default {
 
 <style scoped lang="stylus">
 @import '~swiper/dist/css/swiper.min.css'
-.swiper
-    overflow-x auto
-.swiper_content
-    white-space nowrap
+</style>
 
-.swiper_item
-    display inline-block
+<style lang="stylus">
+@import "~assets/stylus/variable.styl"
+
+.swiper-pagination-bullet
+    width 14px
+    height 14px
+
+.swiper-container-horizontal
+    >.swiper-pagination-bullets
+        .swiper-pagination-bullet
+            margin 0 10px
+.swiper-pagination-bullet-active
+    background $color-theme
 </style>

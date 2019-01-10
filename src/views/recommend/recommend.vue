@@ -7,6 +7,7 @@
                         <img :src="item.picUrl" alt="轮播图片" class="slider_img">
                     </a>
                 </div>
+                <div slot="pagination" class="swiper-pagination"></div>
             </swiper>
         </div>
         <h2 class="title">热门歌单推荐</h2>
