@@ -16,7 +16,7 @@
 
 <script>
 import { SUCC } from '@/api/config';
-import { getRecommend } from '@/api/recommend';
+import { getRecommend, getDiscList } from '@/api/recommend';
 import Swiper from '@/base/swiper/swiper.vue';
 
 export default {
@@ -28,16 +28,30 @@ export default {
 
     created() {
         this._getRecommend();
+        this._getDiscList();
     },
 
     methods: {
-        _getRecommend() {
-            getRecommend().then((res) => {
+        async _getRecommend() {
+            try {
+                const res = await getRecommend();
                 if (res.code === SUCC) {
-                    console.info(res.data.slider);
                     this.slider = res.data.slider;
                 }
-            });
+            } catch (err) {
+                console.error(err);
+            }
+        },
+
+        async _getDiscList() {
+            try {
+                const res = await getDiscList();
+                if (res.code === SUCC) {
+                    this.slider = res.data.slider;
+                }
+            } catch (err) {
+                console.error(err);
+            }
         },
     },
 

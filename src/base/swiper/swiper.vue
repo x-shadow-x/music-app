@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Swiper from 'swiper';
+const Swiper = require('swiper');
 
 export default {
     name: 'swiper',
@@ -68,15 +68,15 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-@import '~swiper/dist/css/swiper.min.css'
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.min.css'
 </style>
 
 <style lang="stylus">
 @import "~assets/stylus/variable.styl"
 
 .swiper-pagination-bullet
-    width 14px
-    height 14px
+    width 8PX
+    height 8PX
 
 .swiper-container-horizontal
     >.swiper-pagination-bullets

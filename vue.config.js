@@ -13,6 +13,11 @@ module.exports = {
         port: 8881, // 端口号
         host: '0.0.0.0',
     },
+    configureWebpack: {
+        externals: {
+            swiper: 'Swiper',
+        },
+    },
     chainWebpack: (config) => {
         config.resolve.alias.set('@', resolve('src')).set('assets', resolve('src/assets'));
     },
