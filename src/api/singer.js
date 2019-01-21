@@ -1,16 +1,38 @@
 import axios from 'axios';
 import { domain, commonQuery } from './config';
 
-export function getRecommend() {
-    const url = `${domain}/getRecommend`;
+export function getSingerList() {
+    const url = `${domain}/getSingerList`;
+    const data = {
+        comm: {
+            ct: 24,
+            cv: 0,
+        },
+        singerList: {
+            module: 'Music.SingerListServer',
+            method: 'get_singer_list',
+            param: {
+                area: -100,
+                sex: -100,
+                genre: -100,
+                index: -100,
+                sin: 0,
+                cur_page: 1,
+            },
+        },
+    };
     const params = Object.assign({}, commonQuery, {
-        targetDomain: 'https://c.y.qq.com/musichall/fcgi-bin',
-        routeName: 'fcg_yqqhomepagerecommend.fcg',
-        uin: 0, // 用户qq号
-        platform: 'h5',
-        needNewCode: 1,
-        _: (new Date()).getTime(),
+        targetDomain: 'https://u.y.qq.com/cgi-bin',
+        routeName: 'musicu.fcg',
+        '-': 'getUCGI8352700688571761',
+        g_tk: 741188905,
+        loginUin: 2509344578,
+        hostUin: 0,
+        platform: 'yqq.json',
+        needNewCode: 0,
+        data: JSON.stringify(data),
     });
+
     return axios.get(url, {
         params,
     }).then((response) => {

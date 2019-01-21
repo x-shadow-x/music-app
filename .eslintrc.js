@@ -20,7 +20,11 @@ module.exports = {
         'no-plusplus': [
             'error', {
                 'allowForLoopAfterthoughts': true
-            }],
+            }
+        ],
+        'no-unused-expressions': ['error', {
+            'allowShortCircuit': true
+        }],
         "no-underscore-dangle": ["off", "always"],
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

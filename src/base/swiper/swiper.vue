@@ -73,6 +73,8 @@ export default {
 
 <style lang="stylus">
 @import "~assets/stylus/variable.styl"
+.swiper-container
+    height 100%
 
 .swiper-pagination-bullet
     width 8PX

@@ -9,12 +9,14 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "better-scroll": "^1.14.0",
         "fastclick": "^1.0.6",
         "jsonp": "^0.2.1",
         "postcss-px-to-viewport": "0.0.3",
         "register-service-worker": "^1.5.2",
         "swiper": "^4.4.6",
         "vue": "^2.5.21",
+        "vue-lazyload": "^1.2.6",
         "vue-router": "^3.0.1",
         "vuex": "^3.0.1"
     },

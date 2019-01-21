@@ -1,25 +1,33 @@
 <template>
     <div class="main">
-        <div class="banner_module" v-if="slider.length > 0">
-            <swiper>
-                <div v-for="item in slider" :key="item.id" class="swiper-slide">
-                    <a :href="item.linkUrl" class="slider_link">
-                        <img :src="item.picUrl" alt="轮播图片" class="slider_img">
-                    </a>
+        <scroll :data="discList" ref="scroll">
+            <div>
+                <div class="banner_module" v-if="slider.length > 0">
+                    <swiper>
+                        <div v-for="item in slider" :key="item.id" class="swiper-slide">
+                            <a :href="item.linkUrl" class="slider_link">
+                                <img
+                                    :src="item.picUrl"
+                                    @load="loadImage"
+                                    alt="轮播图片"
+                                    class="slider_img">
+                            </a>
+                        </div>
+                        <div slot="pagination" class="swiper-pagination"></div>
+                    </swiper>
                 </div>
-                <div slot="pagination" class="swiper-pagination"></div>
-            </swiper>
-        </div>
-        <h2 class="title">热门歌单推荐</h2>
-        <ul>
-            <li v-for="item in discList" :key="item.dissid" class="disc_item">
-                <img :src="item.imgurl" :alt="item.dissname" class="disc_img">
-                <div class="disc_text">
-                    <h2 class="discname" v-html="item.creator.name">{{item.dissname}}</h2>
-                    <p class="desc" v-html="item.dissname"></p>
-                </div>
-            </li>
-        </ul>
+                <h2 class="title" v-if="slider.length > 0">热门歌单推荐</h2>
+                <ul>
+                    <li v-for="item in discList" :key="item.dissid" class="disc_item">
+                        <img v-lazy="item.imgurl" :alt="item.dissname" class="disc_img">
+                        <div class="disc_text">
+                            <h2 class="discname" v-html="item.creator.name">{{item.dissname}}</h2>
+                            <p class="desc" v-html="item.dissname"></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </scroll>
     </div>
 </template>
 
@@ -27,6 +35,7 @@
 import { SUCC } from '@/api/config';
 import { getRecommend, getDiscList } from '@/api/recommend';
 import Swiper from '@/base/swiper/swiper.vue';
+import Scroll from '@/base/scroll/scroll.vue';
 
 export default {
     data() {
@@ -63,19 +72,34 @@ export default {
                 console.error(err);
             }
         },
+
+        loadImage() {
+            if (!this.hasLoad) {
+                this.hasLoad = true;
+                this.$refs.scroll.refresh();
+            }
+        },
     },
 
     components: {
         Swiper,
+        Scroll,
     },
 };
 </script>
 
 <style scoped lang="stylus">
 @import "~assets/stylus/variable.styl"
+.main
+    position fixed
+    width 100%
+    top 172px
+    bottom 0
+.banner_module
+    height 300px
 .slider_link
     display block
-    height 300px
+    height 100%
 .slider_img
     width 100%
     height 100%
