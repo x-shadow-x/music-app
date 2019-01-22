@@ -90,11 +90,7 @@ export default {
 
 <style scoped lang="stylus">
 @import "~assets/stylus/variable.styl"
-.main
-    position fixed
-    width 100%
-    top 172px
-    bottom 0
+
 .banner_module
     height 300px
 .slider_link

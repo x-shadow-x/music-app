@@ -19,11 +19,11 @@ export default {
         },
         click: {
             type: Boolean,
-            defualt: true,
+            default: true,
         },
         data: {
             type: Array,
-            defualt: null,
+            default: () => [],
         },
     },
 

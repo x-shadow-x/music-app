@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { domain, commonQuery } from './config';
 
-export function getSingerList() {
-    const url = `${domain}/getSingerList`;
+export function getSingers(param = {}) {
+    const url = `${domain}/getSingers`;
     const data = {
         comm: {
             ct: 24,
@@ -15,9 +15,10 @@ export function getSingerList() {
                 area: -100,
                 sex: -100,
                 genre: -100,
-                index: -100,
                 sin: 0,
                 cur_page: 1,
+                index: -100,
+                ...param,
             },
         },
     };
@@ -35,10 +36,7 @@ export function getSingerList() {
 
     return axios.get(url, {
         params,
-    }).then((response) => {
-        console.info(response.data);
-        return response.data;
-    }).catch((err) => {
+    }).then(response => response.data).catch((err) => {
         console.error(err);
         return err;
     });
