@@ -52,6 +52,7 @@ export default {
 
             return Promise.all(promiseList).then((res) => {
                 this.singerlist = [...res];
+                console.log(this.singerlist);
             });
         },
 

@@ -17,3 +17,12 @@ export function addClass(el, className) {
         value: classNameArr.join(' '),
     });
 }
+
+export function getData(el, name, val) {
+    const prefix = 'data-';
+    const key = `${prefix}${name}`;
+    if (val) {
+        return el.setAttribute(key, val);
+    }
+    return el.getAttribute(key);
+}
