@@ -3,6 +3,7 @@
         class="list_view"
         :data="data"
         ref="listView"
+        :probe-type="probeType"
         :should-listen-scroll="shouldListenScroll"
         @scroll="onScroll">
         <ul class="group">
@@ -19,6 +20,7 @@
         <ul class="shortcut_list">
             <li
                 class="shortcut_item"
+                :class="{'active': currentIndex === index}"
                 v-for="(item, index) in shortcutList"
                 :key="item.id"
                 :data-index="index"
@@ -47,6 +49,7 @@ export default {
             shouldListenScroll: true,
             scrollY: -1,
             currentIndex: 0,
+            probeType: 3,
         };
     },
     computed: {
@@ -59,6 +62,7 @@ export default {
     },
     created() {
         this.touch = {};
+        this.listHeight = [];
     },
     methods: {
         onScroll(pos) {
@@ -73,12 +77,55 @@ export default {
         onShortcutTouchMove(e) {
             this.touch.moveTouchY = e.touches[0].pageY;
             const distance = this.touch.moveTouchY - this.touch.startTouchY;
-            const delta = parseFloat(distance / ANCHO_HEIGHT);
+            const delta = Math.floor(distance / ANCHO_HEIGHT);
             const anchoIndex = parseInt(this.touch.anchoIndex, 10) + delta;
             this._scrollTo(anchoIndex);
         },
-        _scrollTo(index) {
+        _scrollTo(anchoIndex) {
+            let index = anchoIndex;
+            if (anchoIndex < 0) {
+                index = 0;
+            } else if (index > this.listHeight.length - 2) {
+                index = this.listHeight.length - 2;
+            }
+            this.scrollY = -this.listHeight[index];
             this.$refs.listView.scrollToElement(this.$refs.listGroups[index], 320);
+        },
+        _calculateHeight() {
+            this.listHeight = [];
+            const list = this.$refs.listGroups;
+            let height = 0;
+            this.listHeight.push(height);
+            for (let i = 0, len = list.length; i < len; i++) {
+                height += list[i].clientHeight;
+                this.listHeight.push(height);
+            }
+        },
+    },
+
+    watch: {
+        data() {
+            this.$nextTick(() => {
+                this._calculateHeight();
+            });
+        },
+
+        scrollY(nv) {
+            const scrollY = -nv;
+            const listHeight = this.listHeight;
+            if (nv > 0) {
+                this.currentIndex = 0;
+                return;
+            }
+            for (let i = 0, len = listHeight.length - 1; i < len; i++) {
+                const lowHeight = listHeight[i];
+                const upHeight = listHeight[i + 1];
+                if (scrollY >= lowHeight && scrollY < upHeight) {
+                    this.currentIndex = i;
+                    return;
+                }
+            }
+            this.currentIndex = listHeight.length - 2;
         },
     },
     components: {
@@ -104,6 +151,8 @@ export default {
     width 90px
     height 90px
     border-radius 100%
+    background url('~assets/images/common/logo.png')
+    background-size 100% 100%
 
 .singer_name
     margin-left 20px
@@ -113,7 +162,7 @@ export default {
 .shortcut_list
     position fixed
     right 10px
-    top 58%
+    top 50%
     transform translateY(-50%)
     display flex
     flex-direction column
@@ -126,4 +175,8 @@ export default {
 
 .shortcut_item
     padding 3PX 4PX
+
+.shortcut_item.active {
+    color $color-theme
+}
 </style>

@@ -17,7 +17,7 @@ export default {
         };
     },
 
-    created() {
+    mounted() {
         this._loadData();
     },
 
@@ -25,7 +25,6 @@ export default {
         async _loadData() {
             const tags = await this._getTags();
             await this._getSingers(tags);
-            console.info(this.singerlist);
         },
 
         async _getTags(param) {
@@ -44,35 +43,30 @@ export default {
         },
 
         _getSingers(tags) {
-            const promiseList = tags.map(item => (
-                this._getSingersFn(tags, {
-                    index: item.id,
+            return tags.reduce((res, item) => (
+                res.then((list) => {
+                    if (list) {
+                        this.singerlist = [...this.singerlist, list];
+                    }
+                    return this._getSingersFn(tags, {
+                        index: item.id,
+                    });
                 })
-            ));
-
-            return Promise.all(promiseList).then((res) => {
-                this.singerlist = [...res];
-                console.log(this.singerlist);
+            ), Promise.resolve()).then((list) => {
+                if (list) {
+                    this.singerlist = [...this.singerlist, list];
+                }
             });
         },
 
         _getSingersFn(tags, param) {
             return getSingers(param).then((res) => {
-                if (res.code === SUCC) {
-                    const data = res.data || {};
-                    const tag = tags.filter(item => item.id === data.index)[0];
-                    return {
-                        title: tag.name,
-                        groupId: tag.id,
-                        singerlist: data.singerlist || [],
-                    };
-                }
-
-                const tag = tags.filter(item => item.id === param.index)[0];
+                const data = res.data || {};
+                const tag = tags.filter(item => item.id === data.index)[0];
                 return {
                     title: tag.name,
                     groupId: tag.id,
-                    singerlist: [],
+                    singerlist: (data.singerlist || []).slice(0, 30),
                 };
             });
         },

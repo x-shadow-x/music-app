@@ -9,7 +9,9 @@
             :leave-class="transitionClass.leave"
             :leave-active-class="transitionClass.leaveActive"
             :leave-to-class="transitionClass.leaveTo">
-            <router-view class="transition_view"></router-view>
+            <keep-alive>
+                <router-view class="transition_view"></router-view>
+            </keep-alive>
         </transition>
     </div>
 </template>
