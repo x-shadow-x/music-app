@@ -33,14 +33,13 @@ const PageManager = new Vue({
                 _to.query = _to.query || {};
                 _to.replace = this.pageToken === 0;
                 _to.query.pageToken = +this.pageToken + 1;
-                // PageHelper.setCurrentMenu(_to);
                 next(_to);
                 return true;
             }
 
             // 通过点击浏览器前进后退或者刷新按钮触发的路由变化，根据pageToken判断是哪种跳转方式~并记录当前pageToken
             this._updateJumpWay(to);
-            this._updateAnimate();
+            this._updateAnimate(to);
             this.pageToken = to.query.pageToken;
 
             if (this._beforeEach) {
@@ -62,10 +61,11 @@ const PageManager = new Vue({
             }
         },
 
-        _updateAnimate() {
+        _updateAnimate(to) {
+            const animate = (to.meta && to.meta.animate) || {};
             const animateClass = {
-                enter: DEFAULT_ANIMATE.ENTER,
-                leave: DEFAULT_ANIMATE.LEAVE,
+                enter: animate.enter || DEFAULT_ANIMATE.ENTER,
+                leave: animate.leave || DEFAULT_ANIMATE.LEAVE,
             };
             if (this.jumpWay === JUMP_WAY.PREV) {
                 // 从其他跳转方式切换到返回跳转方式

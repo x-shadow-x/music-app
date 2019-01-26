@@ -25,3 +25,15 @@
 
 .pre_normal_leave-active
     transition all .24s
+
+.slide_enter,
+.slide_leave-to
+    transform translate3d(100%, 0, 0)
+
+.slide_enter-to,
+.slide_leave
+    transform: translate3d(0, 0, 0)
+
+.slide_enter-active,
+.slide_leave-active
+    transition all .24s

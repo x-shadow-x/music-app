@@ -48,4 +48,6 @@ export default {
     width 100%
     top 172px
     bottom 0
+    overflow hidden
+    background $color-background
 </style>

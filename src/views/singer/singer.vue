@@ -1,12 +1,22 @@
 <template>
     <div class="main">
-        <list-view :data="singerlist"/>
+        <list-view :data="singerlist" @select="select" />
+        <transition
+            :enter-class="transitionClass.enter"
+            :enter-active-class="transitionClass.enterActive"
+            :enter-to-class="transitionClass.enterTo"
+            :leave-class="transitionClass.leave"
+            :leave-active-class="transitionClass.leaveActive"
+            :leave-to-class="transitionClass.leaveTo">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
 <script>
 import { SUCC } from '@/api/config';
 import { getSingers } from '@/api/singer';
+import { mapMutations } from 'vuex';
 import ListView from '@/base/list-view/list-view.vue';
 
 export default {
@@ -17,11 +27,31 @@ export default {
         };
     },
 
+    computed: {
+        transitionClass() {
+            return {
+                enter: this.pm.enterClass,
+                enterActive: `${this.pm.enterClass}-active`,
+                enterTo: `${this.pm.enterClass}-to`,
+                leave: this.pm.leaveClass,
+                leaveActive: `${this.pm.leaveClass}-active`,
+                leaveTo: `${this.pm.leaveClass}-to`,
+            };
+        },
+    },
+
     mounted() {
         this._loadData();
     },
 
     methods: {
+        select(item) {
+            this.setSinger(item);
+            this.$router.push({
+                path: `/singer/${item.singer_id}`,
+            });
+        },
+
         async _loadData() {
             const tags = await this._getTags();
             await this._getSingers(tags);
@@ -66,10 +96,14 @@ export default {
                 return {
                     title: tag.name,
                     groupId: tag.id,
-                    singerlist: (data.singerlist || []).slice(0, 30),
+                    singerlist: (data.singerlist || []).slice(0, 20),
                 };
             });
         },
+
+        ...mapMutations({
+            setSinger: 'SET_SINGER',
+        }),
     },
 
     components: {

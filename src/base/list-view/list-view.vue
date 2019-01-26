@@ -10,7 +10,11 @@
             <li class="group_item" v-for="group in data" :key="group.groupId" ref="listGroups">
                 <h2 class="group_tag">{{group.title}}</h2>
                 <ul class="sub_list">
-                    <li class="sub_item" v-for="item in group.singerlist" :key="item.singer_id">
+                    <li
+                        class="sub_item"
+                        v-for="item in group.singerlist"
+                        :key="item.singer_id"
+                        @click="selectItem(item)">
                         <img v-lazy="item.singer_pic" :alt="item.singer_name" class="singer_pic">
                         <p class="singer_name">{{item.singer_name}}</p>
                     </li>
@@ -29,6 +33,9 @@
                 {{item.name}}
             </li>
         </ul>
+        <div class="fixed_title" ref="fixedTitle">
+            <h2 class="group_tag" v-show="currentTitle">{{currentTitle}}</h2>
+        </div>
     </scroll>
 </template>
 
@@ -36,7 +43,8 @@
 import Scroll from '@/base/scroll/scroll.vue';
 import { getData } from 'assets/js/dom';
 
-const ANCHO_HEIGHT = 18;
+const ANCHO_HEIGHT = 18; // 右侧快速入口栏每一项的高度
+
 export default {
     props: {
         data: {
@@ -50,6 +58,7 @@ export default {
             scrollY: -1,
             currentIndex: 0,
             probeType: 3,
+            diff: 0,
         };
     },
     computed: {
@@ -59,10 +68,20 @@ export default {
                 name: group.title.charAt(0),
             }));
         },
+        currentTitle() {
+            if (this.scrollY > 0) {
+                return '';
+            }
+            const currentGroup = this.data[this.currentIndex];
+            return (currentGroup && this.data[this.currentIndex].title) || '';
+        },
     },
     created() {
         this.touch = {};
         this.listHeight = [];
+        this.$nextTick(() => {
+            this.fixedTitleHeight = this.$refs.fixedTitle.clientHeight;
+        });
     },
     methods: {
         onScroll(pos) {
@@ -80,6 +99,10 @@ export default {
             const delta = Math.floor(distance / ANCHO_HEIGHT);
             const anchoIndex = parseInt(this.touch.anchoIndex, 10) + delta;
             this._scrollTo(anchoIndex);
+        },
+
+        selectItem(item) {
+            this.$emit('select', item);
         },
         _scrollTo(anchoIndex) {
             let index = anchoIndex;
@@ -121,11 +144,20 @@ export default {
                 const lowHeight = listHeight[i];
                 const upHeight = listHeight[i + 1];
                 if (scrollY >= lowHeight && scrollY < upHeight) {
+                    this.diff = upHeight - scrollY;
                     this.currentIndex = i;
                     return;
                 }
             }
             this.currentIndex = listHeight.length - 2;
+        },
+
+        diff(nv) {
+            let topY = 0;
+            if (nv < this.fixedTitleHeight) {
+                topY = nv - this.fixedTitleHeight;
+            }
+            this.$refs.fixedTitle.style.transform = `translate3d(0, ${topY}px, 0)`;
         },
     },
     components: {
@@ -168,10 +200,11 @@ export default {
     flex-direction column
     align-items center
     font-size $font-size-small-s
-    background $color-highlight-background
+    background $color-background-d
     color $color-text-l
     border-radius 22px
     padding 12px 0
+    z-index 2
 
 .shortcut_item
     padding 3PX 4PX
@@ -179,4 +212,11 @@ export default {
 .shortcut_item.active {
     color $color-theme
 }
+
+.fixed_title
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 80px
 </style>

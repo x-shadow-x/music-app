@@ -68,3 +68,8 @@ export function getDiscList() {
         return err;
     });
 }
+
+export function getSingerDetail() {
+    // singerMId
+    // https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg
+}
