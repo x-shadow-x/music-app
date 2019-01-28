@@ -5,6 +5,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { SUCC } from '@/api/config';
+import { getSingerDetail } from '@/api/singer';
 
 export default {
     computed: {
@@ -14,7 +16,24 @@ export default {
     },
 
     created() {
-        console.info(this.singer);
+        this._getSingerDetail();
+    },
+
+    methods: {
+        async _getSingerDetail() {
+            try {
+                if (!this.singer.singer_mid) {
+                    this.$router.push('/singer');
+                }
+
+                const res = await getSingerDetail(this.singer.singer_mid);
+                if (res.code === SUCC) {
+                    console.info(res);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        },
     },
 };
 </script>

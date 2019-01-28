@@ -69,7 +69,30 @@ export function getDiscList() {
     });
 }
 
-export function getSingerDetail() {
-    // singerMId
-    // https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg
+export function getSingerDetail(singerMId) {
+    const url = `${domain}/getDiscList`;
+    const params = Object.assign({}, commonQuery, {
+        targetDomain: 'https://c.y.qq.com/v8/fcg-bin',
+        routeName: 'fcg_v8_singer_track_cp.fcg',
+        g_tk: 411520452,
+        loginUin: 0, // qq号
+        hostUin: 0,
+        platform: 'yqq.json',
+        needNewCode: 0,
+        ct: 24,
+        singermid: singerMId,
+        order: 'listen',
+        begin: 0,
+        num: 30,
+        songstatus: 1,
+    });
+    return axios.get(url, {
+        params,
+    }).then((response) => {
+        console.info(response.data);
+        return response.data;
+    }).catch((err) => {
+        console.error(err);
+        return err;
+    });
 }
