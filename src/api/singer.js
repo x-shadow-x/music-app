@@ -70,7 +70,7 @@ export function getDiscList() {
 }
 
 export function getSingerDetail(singerMId) {
-    const url = `${domain}/getDiscList`;
+    const url = `${domain}/getSingerDetail`;
     const params = Object.assign({}, commonQuery, {
         targetDomain: 'https://c.y.qq.com/v8/fcg-bin',
         routeName: 'fcg_v8_singer_track_cp.fcg',
@@ -85,6 +85,33 @@ export function getSingerDetail(singerMId) {
         begin: 0,
         num: 30,
         songstatus: 1,
+    });
+    return axios.get(url, {
+        params,
+    }).then((response) => {
+        console.info(response.data);
+        return response.data;
+    }).catch((err) => {
+        console.error(err);
+        return err;
+    });
+}
+
+export function getVkey(songmid) {
+    const url = `${domain}/getVKey`;
+    const params = Object.assign({}, commonQuery, {
+        targetDomain: 'https://c.y.qq.com/base/fcgi-bin',
+        routeName: 'fcg_music_express_mobile3.fcg',
+        g_tk: 0,
+        loginUin: 0, // qq号
+        hostUin: 0,
+        platform: 'yqq',
+        needNewCode: 0,
+        cid: 205361747,
+        uin: 0,
+        songmid,
+        filename: `C400${songmid}.m4a`,
+        guid: 7332953645,
     });
     return axios.get(url, {
         params,

@@ -7,8 +7,14 @@
 import { mapGetters } from 'vuex';
 import { SUCC } from '@/api/config';
 import { getSingerDetail } from '@/api/singer';
+import createSong from '@/type/song';
 
 export default {
+    data() {
+        return {
+            songs: [],
+        };
+    },
     computed: {
         ...mapGetters([
             'singer',
@@ -25,14 +31,22 @@ export default {
                 if (!this.singer.singer_mid) {
                     this.$router.push('/singer');
                 }
-
                 const res = await getSingerDetail(this.singer.singer_mid);
                 if (res.code === SUCC) {
-                    console.info(res);
+                    this.songs = this._normalizeSongs(res.data.list);
+                    console.info(this.songs);
                 }
             } catch (err) {
                 console.error(err);
             }
+        },
+
+        _normalizeSongs(list) {
+            const ret = [];
+            list.forEach((item) => {
+                ret.push(createSong(item.musicData));
+            });
+            return ret;
         },
     },
 };
