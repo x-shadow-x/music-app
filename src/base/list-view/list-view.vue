@@ -83,6 +83,10 @@ export default {
             this.fixedTitleHeight = this.$refs.fixedTitle.clientHeight;
         });
     },
+    mounted() {
+        console.info(this.$refs.listView.clientHeight);
+        console.info(this.$refs.fixedTitle.clientHeight);
+    },
     methods: {
         onScroll(pos) {
             this.scrollY = pos.y;
@@ -194,8 +198,8 @@ export default {
 .shortcut_list
     position fixed
     right 10px
-    top 50%
-    transform translateY(-50%)
+    top 182px
+    bottom 10px
     display flex
     flex-direction column
     align-items center
@@ -207,7 +211,8 @@ export default {
     z-index 2
 
 .shortcut_item
-    padding 3PX 4PX
+    padding 0 4PX
+    flex 1
 
 .shortcut_item.active {
     color $color-theme

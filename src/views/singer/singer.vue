@@ -96,7 +96,7 @@ export default {
                 return {
                     title: tag.name,
                     groupId: tag.id,
-                    singerlist: (data.singerlist || []).slice(0, 20),
+                    singerlist: (data.singerlist || []).slice(0, 10),
                 };
             });
         },
@@ -111,6 +111,3 @@ export default {
     },
 };
 </script>
-
-<style scoped lang="stylus">
-</style>

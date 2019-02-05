@@ -1,7 +1,9 @@
 <template>
-    <div class="main primary_main">
-        <music-list :songs="songs" :title="title" :singer-pic="singerPic" />
-    </div>
+    <music-list
+        ref="musicList"
+        :songs="songs"
+        :title="title"
+        :singer-pic="singerPic" />
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -33,6 +35,7 @@ export default {
     },
 
     methods: {
+
         async _getSingerDetail() {
             try {
                 if (!this.singer.singer_mid) {
@@ -62,9 +65,3 @@ export default {
     },
 };
 </script>
-
-<style scoped lang="stylus">
-.primary_main
-    top 0
-    z-index 3
-</style>

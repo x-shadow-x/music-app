@@ -1,2 +1,8 @@
 export const SET_SINGER = 'SET_SINGER';
-export const temp = '临时导出，避免单个时eslint报错需要用default导出';
+
+export const SET_MODE = 'SET_MODE';
+export const SET_PLAYING = 'SET_PLAYING';
+export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
+export const SET_PLAY_LIST = 'SET_PLAY_LIST';
+export const SET_ORIANGL_LIST = 'SET_ORIANGL_LIST';
+export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';

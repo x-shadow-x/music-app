@@ -92,14 +92,12 @@ export default {
 
 <style scoped lang="stylus">
 .wrapper
-    display flex
-    flex-direction column
     height 100%
     overflow hidden
 .loading_box
     display flex
     justify-content center
     width 100%
+    height 100%
     align-items center
-    flex-grow 1
 </style>

@@ -13,11 +13,13 @@
                 <router-view class="transition_view"></router-view>
             </keep-alive>
         </transition>
+        <x-player />
     </div>
 </template>
 <script>
 import MHeader from '@/components/m-header/m-header.vue';
 import Tab from '@/components/tab/tab.vue';
+import XPlayer from '@/components/x-player/x-player.vue';
 import { PM } from '@/router/index';
 
 export default {
@@ -36,6 +38,7 @@ export default {
     components: {
         MHeader,
         Tab,
+        XPlayer,
     },
 };
 </script>
@@ -48,6 +51,6 @@ export default {
     width 100%
     top 172px
     bottom 0
-    overflow hidden
     background $color-background
+    overflow hidden
 </style>

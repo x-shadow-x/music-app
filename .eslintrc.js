@@ -12,6 +12,7 @@ module.exports = {
             'error',
             4
         ],
+        'max-len': ['error', 120],
         'prefer-destructuring': ['error', {
             'VariableDeclarator': {
                 object: false
@@ -23,6 +24,7 @@ module.exports = {
             }
         ],
         'no-unused-expressions': ['error', {
+            'allowTernary': true,
             'allowShortCircuit': true
         }],
         "no-underscore-dangle": ["off", "always"],
