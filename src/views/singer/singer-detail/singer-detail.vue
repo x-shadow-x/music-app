@@ -3,7 +3,7 @@
         ref="musicList"
         :songs="songs"
         :title="title"
-        :singer-pic="singerPic" />
+        :bg-pic="bgPic" />
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -22,7 +22,7 @@ export default {
         title() {
             return this.singer.singer_name;
         },
-        singerPic() {
+        bgPic() {
             return `https://y.gtimg.cn/music/photo_new/T001R300x300M000${this.singer.singer_mid}.jpg?max_age=2592000`;
         },
         ...mapGetters([

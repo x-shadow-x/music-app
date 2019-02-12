@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <scroll :data="discList" ref="scroll">
+        <scroll :data="dissList" ref="scroll">
             <div>
                 <div class="banner_module" v-if="slider.length > 0">
                     <swiper>
@@ -18,39 +18,84 @@
                 </div>
                 <h2 class="title" v-if="slider.length > 0">热门歌单推荐</h2>
                 <ul>
-                    <li v-for="item in discList" :key="item.dissid" class="disc_item">
-                        <img v-lazy="item.imgurl" :alt="item.dissname" class="disc_img">
-                        <div class="disc_text">
-                            <h2 class="discname" v-html="item.creator.name">{{item.dissname}}</h2>
+                    <li v-for="item in dissList" :key="item.dissid" class="diss_item" @click="selectDiss(item)">
+                        <img class="diss_img" v-lazy="item.imgurl" :alt="item.dissname">
+                        <div class="diss_text">
+                            <h2 class="dissname" v-html="item.creator.name">{{item.dissname}}</h2>
                             <p class="desc" v-html="item.dissname"></p>
                         </div>
                     </li>
                 </ul>
             </div>
         </scroll>
+        <transition
+            :enter-class="transitionClass.enter"
+            :enter-active-class="transitionClass.enterActive"
+            :enter-to-class="transitionClass.enterTo"
+            :leave-class="transitionClass.leave"
+            :leave-active-class="transitionClass.leaveActive"
+            :leave-to-class="transitionClass.leaveTo">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
 <script>
 import { SUCC } from '@/api/config';
-import { getRecommend, getDiscList } from '@/api/recommend';
+import { getRecommend, getDissList } from '@/api/recommend';
 import Swiper from '@/base/swiper/swiper.vue';
 import Scroll from '@/base/scroll/scroll.vue';
+import scrollMixin from '@/mixin/scroll-mixin';
+import { mapMutations } from 'vuex';
 
 export default {
+    mixins: [
+        scrollMixin,
+    ],
     data() {
         return {
             slider: [],
-            discList: [],
+            dissList: [],
         };
+    },
+    computed: {
+        transitionClass() {
+            return {
+                enter: this.pm.enterClass,
+                enterActive: `${this.pm.enterClass}-active`,
+                enterTo: `${this.pm.enterClass}-to`,
+                leave: this.pm.leaveClass,
+                leaveActive: `${this.pm.leaveClass}-active`,
+                leaveTo: `${this.pm.leaveClass}-to`,
+            };
+        },
     },
 
     created() {
         this._getRecommend();
-        this._getDiscList();
+        this._getDissList();
     },
 
     methods: {
+        loadImage() {
+            if (!this.hasLoad) {
+                this.hasLoad = true;
+                this.$refs.scroll.refresh();
+            }
+        },
+
+        selectDiss(diss) {
+            this.setDiss(diss);
+            this.$router.push(`/recommend/${diss.dissid}`);
+        },
+
+        _adjustScroll(playList) {
+            if (playList.length > 0) {
+                this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
+                this.$refs.scroll.refresh();
+            }
+        },
+
         async _getRecommend() {
             try {
                 const res = await getRecommend();
@@ -62,23 +107,20 @@ export default {
             }
         },
 
-        async _getDiscList() {
+        async _getDissList() {
             try {
-                const res = await getDiscList();
+                const res = await getDissList();
                 if (res.code === SUCC) {
-                    this.discList = res.data.list;
+                    this.dissList = res.data.list;
                 }
             } catch (err) {
                 console.error(err);
             }
         },
 
-        loadImage() {
-            if (!this.hasLoad) {
-                this.hasLoad = true;
-                this.$refs.scroll.refresh();
-            }
-        },
+        ...mapMutations({
+            setDiss: 'SET_DISS',
+        }),
     },
 
     components: {
@@ -104,16 +146,16 @@ export default {
     text-align center
     color $color-theme
     font-size $font-size-medium
-.disc_item
+.diss_item
     display flex
     align-items center
     padding 20px 40px
-.disc_img
+.diss_img
     width 140px
     height 140px
     margin-right 40px
     flex none
-.disc_text
+.diss_text
     flex 1
     font-size $font-size-medium
     line-height 1.6

@@ -11,6 +11,11 @@ const mutations = {
         _state.mode = mode;
     },
 
+    [types.SET_IS_INIT](state, isInit) {
+        const _state = state;
+        _state.isInit = isInit;
+    },
+
     [types.SET_PLAYING](state, playing) {
         const _state = state;
         _state.playing = playing;
@@ -26,14 +31,14 @@ const mutations = {
         _state.playList = playList;
     },
 
-    [types.SET_ORIANGL_LIST](state, orianglList) {
-        const _state = state;
-        _state.orianglList = orianglList;
-    },
-
     [types.SET_CURRENT_INDEX](state, currentIndex) {
         const _state = state;
         _state.currentIndex = currentIndex;
+    },
+
+    [types.SET_DISS](state, diss) {
+        const _state = state;
+        _state.diss = diss;
     },
 };
 

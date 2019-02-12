@@ -42,10 +42,14 @@
 <script>
 import Scroll from '@/base/scroll/scroll.vue';
 import { getData } from 'assets/js/dom';
+import scrollMixin from '@/mixin/scroll-mixin';
 
 const ANCHO_HEIGHT = 18; // 右侧快速入口栏每一项的高度
 
 export default {
+    mixins: [
+        scrollMixin,
+    ],
     props: {
         data: {
             type: Array,
@@ -82,10 +86,6 @@ export default {
         this.$nextTick(() => {
             this.fixedTitleHeight = this.$refs.fixedTitle.clientHeight;
         });
-    },
-    mounted() {
-        console.info(this.$refs.listView.clientHeight);
-        console.info(this.$refs.fixedTitle.clientHeight);
     },
     methods: {
         onScroll(pos) {
@@ -126,6 +126,12 @@ export default {
             for (let i = 0, len = list.length; i < len; i++) {
                 height += list[i].clientHeight;
                 this.listHeight.push(height);
+            }
+        },
+        _adjustScroll(playList) {
+            if (playList.length > 0) {
+                this.$refs.listView.$el.style.height = 'calc(100% - 70px)';
+                this.$refs.listView.refresh();
             }
         },
     },
@@ -172,6 +178,8 @@ export default {
 
 <style scoped lang="stylus">
 @import "~assets/stylus/variable.styl"
+@import "~assets/stylus/mixin.styl"
+
 .group_tag
     font-size $font-size-medium
     background $color-highlight-background
@@ -181,7 +189,7 @@ export default {
 .sub_item
     display flex
     align-items center
-    padding 20px 0 20px 40px
+    padding 20px 60px 20px 40px
 
 .singer_pic
     width 90px
@@ -191,9 +199,12 @@ export default {
     background-size 100% 100%
 
 .singer_name
+    flex-basis 0
+    flex-grow 1
     margin-left 20px
     color $color-text-d
     font-size $font-size-medium
+    no-wrap()
 
 .shortcut_list
     position fixed

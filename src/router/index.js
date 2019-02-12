@@ -3,9 +3,10 @@ import PageRouter from './page-router';
 
 const Rank = () => import(/* webpackChunkName: "rank" */ '@/views/rank/rank.vue');
 const Recommend = () => import(/* webpackChunkName: "recommend" */ '@/views/recommend/recommend.vue');
+const Diss = () => import(/* webpackChunkName: "diss" */ '@/views/recommend/diss/diss.vue');
 const Search = () => import(/* webpackChunkName: "search" */ '@/views/search/search.vue');
-const Singer = () => import(/* webpackChunkName: "singer" */ '@/views/singer/singer.vue');
-const SingerDetail = () => import(/* webpackChunkName: "singerDetail" */ '@/views/singer-detail/singer-detail.vue');
+const Singer = () => import(/* webpackChunkName: "singers" */ '@/views/singer/singer.vue');
+const SingerDetail = () => import(/* webpackChunkName: "singer" */ '@/views/singer/singer-detail/singer-detail.vue');
 
 Vue.use(PageRouter);
 
@@ -21,6 +22,18 @@ const router = new PageRouter({
     }, {
         path: '/recommend',
         component: Recommend,
+        children: [
+            {
+                path: ':id',
+                component: Diss,
+                meta: {
+                    animate: {
+                        enter: 'slide_enter',
+                        leave: 'slide_leave',
+                    },
+                },
+            },
+        ],
     }, {
         path: '/search',
         component: Search,

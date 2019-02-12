@@ -22,8 +22,8 @@ export function getRecommend() {
     });
 }
 
-export function getDiscList() {
-    const url = `${domain}/getDiscList`;
+export function getDissList() {
+    const url = `${domain}/getDissList`;
     const params = Object.assign({}, commonQuery, {
         targetDomain: 'https://c.y.qq.com/splcloud/fcgi-bin',
         routeName: 'fcg_get_diss_by_tag.fcg',
@@ -37,6 +37,34 @@ export function getDiscList() {
         sortId: 5,
         sin: 0,
         ein: 29,
+    });
+    return axios.get(url, {
+        params,
+    }).then((response) => {
+        console.info(response.data);
+        return response.data;
+    }).catch((err) => {
+        console.error(err);
+        return err;
+    });
+}
+
+export function getDissDetail(dissId) {
+    const url = `${domain}/getDissDetail`;
+    const params = Object.assign({}, commonQuery, {
+        targetDomain: 'https://c.y.qq.com/qzone/fcg-bin',
+        routeName: 'fcg_ucc_getcdinfo_byids_cp.fcg',
+        origin: 'https://y.qq.com',
+        referer: `https://y.qq.com/n/yqq/playlist/${dissId}.html`,
+        type: 1,
+        json: 1,
+        utf8: 1,
+        onlysong: 0,
+        disstid: dissId,
+        loginUin: 0,
+        hostUin: 0,
+        platform: 'yqq.json',
+        needNewCode: 0,
     });
     return axios.get(url, {
         params,

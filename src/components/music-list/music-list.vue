@@ -8,35 +8,38 @@
             class="bg_area bg_box"
             ref="bgBox"
             :style="{ transform: 'scale(' + scale + ')' }">
-            <div class="hover" :style="{backgroundImage: 'url(' + singerPic + ')'}"></div>
-            <button class="play_btn" v-show="songs.length > 0" @click="play">
-                <i class="fa fa-play-circle-o play_icon"></i>
-                随机播放全部
-            </button>
+            <div class="hover" :style="{backgroundImage: 'url(' + bgPic + ')'}"></div>
         </div>
         <div class="song_list_box">
             <div class="bg_area"></div>
             <div class="list_contain">
                 <scroll
                     class="list"
+                    ref="scroll"
                     :data="songs"
                     :probe-type="probeType"
                     :should-listen-scroll="shouldListenScroll"
                     @scroll="scroll"
                     >
-                    <ul class="music_list">
-                        <li
-                            v-for="(item, index) in songs"
-                            :key="item.songid"
-                            @click="select(index)"
-                            class="music_item">
-                            <span class="order_num" v-if="showOrder">{{index > 2 ? index + 1 : ''}}</span>
-                            <div class="music_info">
-                                <h2 class="song_name">{{item.songname}}</h2>
-                                <p class="song_dec">{{item.singer}}-{{item.albumname}}</p>
-                            </div>
-                        </li>
-                    </ul>
+                    <div>
+                        <button class="play_btn" v-show="songs.length > 0" @click="play">
+                            <i class="fa fa-play-circle-o play_icon"></i>
+                            随机播放全部
+                        </button>
+                        <ul class="music_list">
+                            <li
+                                v-for="(item, index) in songs"
+                                :key="item.songid"
+                                @click="select(index)"
+                                class="music_item">
+                                <span class="order_num" v-if="showOrder">{{index > 2 ? index + 1 : ''}}</span>
+                                <div class="music_info">
+                                    <h2 class="song_name">{{item.songname}}</h2>
+                                    <p class="song_dec">{{item.singer}}-{{item.albumname}}</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </scroll>
             </div>
         </div>
@@ -45,9 +48,13 @@
 
 <script>
 import Scroll from '@/base/scroll/scroll.vue';
-import { mapActions } from 'vuex';
+import scrollMixin from '@/mixin/scroll-mixin';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
+    mixins: [
+        scrollMixin,
+    ],
     data() {
         return {
             probeType: 3,
@@ -68,10 +75,15 @@ export default {
             type: String,
             default: '',
         },
-        singerPic: {
+        bgPic: {
             type: String,
             default: '',
         },
+    },
+    computed: {
+        ...mapGetters([
+            'isInit',
+        ]),
     },
     components: {
         Scroll,
@@ -88,16 +100,25 @@ export default {
         },
 
         back() {
-            this.$router.back();
+            this.$router.replace('/singer');
         },
 
-        play() {},
+        play() {
+            console.info(this.isInit);
+        },
 
         select(index) {
             this.updateSong({
                 list: this.songs,
                 currentIndex: index,
             });
+        },
+
+        _adjustScroll(playList) {
+            if (playList.length > 0) {
+                this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
+                this.$refs.scroll.refresh();
+            }
         },
 
         ...mapActions([
@@ -162,8 +183,8 @@ header
     border-radius 60px
     color $color-theme
     position absolute
-    bottom 20px
     left 50%
+    top -100px
     transform translateX(-50%)
     padding 0 26px
 .play_icon
@@ -192,6 +213,7 @@ header
     .bg_area
         padding-top calc(74% - 80px)
 .list_contain
+    position relative
     overflow visible
     height 1px
     flex-grow 1

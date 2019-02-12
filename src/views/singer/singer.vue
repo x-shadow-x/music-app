@@ -1,6 +1,8 @@
 <template>
-    <div class="main">
-        <list-view :data="singerlist" @select="select" />
+    <div>
+        <div class="main">
+            <list-view :data="singerlist" @select="select" />
+        </div>
         <transition
             :enter-class="transitionClass.enter"
             :enter-active-class="transitionClass.enterActive"

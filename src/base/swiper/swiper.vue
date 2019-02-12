@@ -19,7 +19,7 @@ export default {
             default: true,
         },
         autoplay: {
-            type: Object,
+            type: [Object, Boolean],
             default: () => ({
                 delay: 3000,
                 stopOnLastSlide: false,
