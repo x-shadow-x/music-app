@@ -1,9 +1,17 @@
 <template>
-    <div>搜索页</div>
+    <div>
+        <search-box></search-box>
+    </div>
 </template>
 
 <script>
-export default {};
+import SearchBox from '@/base/search-box/search-box.vue';
+
+export default {
+    components: {
+        SearchBox,
+    },
+};
 </script>
 
 <style scoped lang="stylus">

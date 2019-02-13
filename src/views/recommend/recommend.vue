@@ -1,33 +1,35 @@
 <template>
-    <div class="main">
-        <scroll :data="dissList" ref="scroll">
-            <div>
-                <div class="banner_module" v-if="slider.length > 0">
-                    <swiper>
-                        <div v-for="item in slider" :key="item.id" class="swiper-slide">
-                            <a :href="item.linkUrl" class="slider_link">
-                                <img
-                                    :src="item.picUrl"
-                                    @load="loadImage"
-                                    alt="轮播图片"
-                                    class="slider_img">
-                            </a>
-                        </div>
-                        <div slot="pagination" class="swiper-pagination"></div>
-                    </swiper>
+    <div>
+        <div class="main">
+            <scroll :data="dissList" ref="scroll">
+                <div>
+                    <div class="banner_module" v-if="slider.length > 0">
+                        <swiper>
+                            <div v-for="item in slider" :key="item.id" class="swiper-slide">
+                                <a :href="item.linkUrl" class="slider_link">
+                                    <img
+                                        :src="item.picUrl"
+                                        @load="loadImage"
+                                        alt="轮播图片"
+                                        class="slider_img">
+                                </a>
+                            </div>
+                            <div slot="pagination" class="swiper-pagination"></div>
+                        </swiper>
+                    </div>
+                    <h2 class="title" v-if="slider.length > 0">热门歌单推荐</h2>
+                    <ul>
+                        <li v-for="item in dissList" :key="item.dissid" class="diss_item" @click="selectDiss(item)">
+                            <img class="diss_img" v-lazy="item.imgurl" :alt="item.dissname">
+                            <div class="diss_text">
+                                <h2 class="dissname" v-html="item.creator.name">{{item.dissname}}</h2>
+                                <p class="desc" v-html="item.dissname"></p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <h2 class="title" v-if="slider.length > 0">热门歌单推荐</h2>
-                <ul>
-                    <li v-for="item in dissList" :key="item.dissid" class="diss_item" @click="selectDiss(item)">
-                        <img class="diss_img" v-lazy="item.imgurl" :alt="item.dissname">
-                        <div class="diss_text">
-                            <h2 class="dissname" v-html="item.creator.name">{{item.dissname}}</h2>
-                            <p class="desc" v-html="item.dissname"></p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </scroll>
+            </scroll>
+        </div>
         <transition
             :enter-class="transitionClass.enter"
             :enter-active-class="transitionClass.enterActive"

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import PageRouter from './page-router';
 
 const Rank = () => import(/* webpackChunkName: "rank" */ '@/views/rank/rank.vue');
+const RankDetail = () => import(/* webpackChunkName: "rankDetail" */ '@/views/rank/rank-detail/rank-detail.vue');
 const Recommend = () => import(/* webpackChunkName: "recommend" */ '@/views/recommend/recommend.vue');
 const Diss = () => import(/* webpackChunkName: "diss" */ '@/views/recommend/diss/diss.vue');
 const Search = () => import(/* webpackChunkName: "search" */ '@/views/search/search.vue');
@@ -19,6 +20,18 @@ const router = new PageRouter({
     }, {
         path: '/rank',
         component: Rank,
+        children: [
+            {
+                path: ':id',
+                component: RankDetail,
+                meta: {
+                    animate: {
+                        enter: 'slide_enter',
+                        leave: 'slide_leave',
+                    },
+                },
+            },
+        ],
     }, {
         path: '/recommend',
         component: Recommend,

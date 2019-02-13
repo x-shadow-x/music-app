@@ -8,3 +8,5 @@ export const SET_PLAY_LIST = 'SET_PLAY_LIST';
 export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';
 
 export const SET_DISS = 'SET_DISS';
+
+export const SET_RANK = 'SET_RANK';

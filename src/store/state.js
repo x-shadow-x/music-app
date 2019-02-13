@@ -11,6 +11,8 @@ const state = {
     currentIndex: -1, // 当前正在播放的歌曲的索引
 
     diss: {}, // 推荐列表项
+
+    rank: {}, // 排行榜项
 };
 
 export default state;

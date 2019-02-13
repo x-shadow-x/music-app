@@ -40,6 +40,11 @@ const mutations = {
         const _state = state;
         _state.diss = diss;
     },
+
+    [types.SET_RANK](state, rank) {
+        const _state = state;
+        _state.rank = rank;
+    },
 };
 
 export default mutations;

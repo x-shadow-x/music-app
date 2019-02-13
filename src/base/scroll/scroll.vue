@@ -12,6 +12,7 @@ import BScroll from 'better-scroll';
 import Loading from '@/base/loading/loading.vue';
 
 export default {
+    name: 'scroll',
     props: {
         probeType: {
             type: Number,
@@ -22,6 +23,10 @@ export default {
             default: true,
         },
         shouldListenScroll: {
+            type: Boolean,
+            default: false,
+        },
+        pullup: {
             type: Boolean,
             default: false,
         },
@@ -55,6 +60,13 @@ export default {
                 const _self = this;
                 this.scroll.on('scroll', (pos) => {
                     _self.$emit('scroll', pos);
+                });
+            }
+
+            if (this.pullup) {
+                const _self = this;
+                this.scroll.on('scrollEnd', () => {
+                    _self.$emit('scrollEnd');
                 });
             }
         },

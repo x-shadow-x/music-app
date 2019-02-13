@@ -3,12 +3,14 @@
         ref="musicList"
         :songs="songs"
         :title="title"
-        :bg-pic="bgPic" />
+        :bg-pic="bgPic"
+        :showOrder="true"
+        prev-path="/rank" />
 </template>
 
 <script>
 import { SUCC } from '@/api/config';
-import { getDissDetail } from '@/api/recommend';
+import { getRankDetail } from '@/api/rank';
 import MusicList from '@/components/music-list/music-list.vue';
 import createSong from '@/type/song';
 import { mapGetters } from 'vuex';
@@ -17,33 +19,34 @@ export default {
     data() {
         return {
             songs: [],
+            prevPath: '/rank',
         };
     },
     computed: {
         title() {
-            return this.diss.dissname;
+            return this.rank.topTitle;
         },
         bgPic() {
-            return this.diss.imgurl;
+            return this.rank.picUrl;
         },
         ...mapGetters([
-            'diss',
+            'rank',
         ]),
     },
 
     created() {
-        this._getDissDetail(this.diss.dissid);
+        this._getRankDetail(this.rank.id);
     },
 
     methods: {
-        async _getDissDetail(dissId) {
+        async _getRankDetail(rankId) {
             try {
-                if (!dissId) {
-                    this.$router.push('/recommend');
+                if (!rankId) {
+                    this.$router.push('/rank');
                 }
-                const res = await getDissDetail(dissId);
+                const res = await getRankDetail(rankId);
                 if (res.code === SUCC) {
-                    this.songs = this._normalizeSongs(res.cdlist[0].songlist);
+                    this.songs = this._normalizeSongs(res.songlist);
                 } else {
                     this.songs = [];
                 }
@@ -55,7 +58,7 @@ export default {
         _normalizeSongs(list) {
             const ret = [];
             list.forEach((item) => {
-                ret.push(createSong(item));
+                ret.push(createSong(item.data));
             });
             return ret;
         },
@@ -66,3 +69,6 @@ export default {
     },
 };
 </script>
+
+<style lang="stylus" scoped>
+</style>

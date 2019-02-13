@@ -63,6 +63,10 @@ export default {
         };
     },
     props: {
+        prevPath: {
+            type: String,
+            default: '/',
+        },
         songs: {
             type: Array,
             default: () => [],
@@ -100,7 +104,8 @@ export default {
         },
 
         back() {
-            this.$router.replace('/singer');
+            this.$router.replace(this.prevPath);
+            // this.$router.go(-1);
         },
 
         play() {
