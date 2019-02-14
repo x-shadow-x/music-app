@@ -19,8 +19,7 @@
                     :data="songs"
                     :probe-type="probeType"
                     :should-listen-scroll="shouldListenScroll"
-                    @scroll="scroll"
-                    >
+                    @scroll="scroll">
                     <div>
                         <button class="play_btn" v-show="songs.length > 0" @click="play">
                             <i class="fa fa-play-circle-o play_icon"></i>
@@ -105,7 +104,6 @@ export default {
 
         back() {
             this.$router.replace(this.prevPath);
-            // this.$router.go(-1);
         },
 
         play() {

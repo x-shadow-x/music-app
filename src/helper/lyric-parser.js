@@ -13,7 +13,7 @@ function _getTime(str) {
 function _parser(data) {
     const reg = /\[(\d\d:\d\d\.\d\d)\]([\s\S]*)/;
     const result = [];
-    data.forEach((item) => {
+    (data || []).forEach((item) => {
         const res = item.match(reg);
         if (res && res[1]) {
             const time = _getTime(res[1]);

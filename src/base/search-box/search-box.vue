@@ -1,14 +1,18 @@
 <template>
-    <div class="main">
+    <div class="search_panel" :class="{ full: searchList.length > 0 }">
         <div class="search_bar">
             <i class="fa fa-search search_icon"></i>
             <input type="text" class="search_input" placeholder="搜索歌曲" v-model="keyWord">
             <i class="fa fa-times-circle clear_icon" v-if="keyWord" @click="clear"></i>
         </div>
         <div class="search_result" v-if="keyWord && searchList.length > 0">
-            <scroll :data="searchList" :pullup="pullup" @scrollEnd="loadMore">
+            <scroll ref="scroll" :data="searchList" :pullup="pullup" @scrollEnd="loadMore">
                 <ul class="search_list">
-                    <li v-for="item in searchList" :key="item.songid" class="search_item">
+                    <li
+                        class="search_item"
+                        v-for="item in searchList"
+                        :key="item.songid"
+                        @click="selectItem(item)">
                         <i class="fa fa-music item_icon"></i>
                         <p class="song_info">
                             {{item.songname}}-{{item.singer}}
@@ -27,9 +31,16 @@
 import { SUCC } from '@/api/config';
 import { search } from '@/api/search';
 import Scroll from '@/base/scroll/scroll.vue';
+import createSong from '@/type/song';
+import scrollMixin from '@/mixin/scroll-mixin';
+import { mapActions } from 'vuex';
+
 
 export default {
     name: 'searchBox',
+    mixins: [
+        scrollMixin,
+    ],
     data() {
         return {
             pullup: true,
@@ -38,12 +49,25 @@ export default {
             hasMore: true,
         };
     },
+    props: {
+        outKeyWord: {
+            type: String,
+            default: '',
+        },
+    },
     created() {
         this.pageIndex = 1;
     },
     methods: {
         clear() {
             this.keyWord = '';
+        },
+        selectItem(item) {
+            this.updateSong({
+                list: [item],
+                currentIndex: 0,
+            });
+            this.$emit('selectItem', this.keyWord);
         },
         async loadMore() {
             if (!this.hasMore) {
@@ -60,11 +84,7 @@ export default {
             try {
                 const res = await search(keyWord, this.pageIndex);
                 if (res.code === SUCC) {
-                    const list = ((res.data && res.data.song && res.data.song.list) || []).map(item => ({
-                        songid: item.songid,
-                        songname: item.songname,
-                        singer: item.singer.map(singerItem => singerItem.name).join('-'),
-                    }));
+                    const list = this._normalizeSongs((res.data && res.data.song && res.data.song.list) || []);
                     this.searchList = [...this.searchList, ...list];
                     this.pageIndex += 1;
                     this.hasMore = this.searchList.length < res.data.song.totalnum;
@@ -73,12 +93,33 @@ export default {
                 console.error(err);
             }
         },
+        _adjustScroll(playList) {
+            if (playList.length > 0) {
+                this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
+                this.$refs.scroll.refresh();
+            }
+        },
+        _normalizeSongs(list) {
+            const ret = [];
+            list.forEach((item) => {
+                ret.push(createSong(item));
+            });
+            return ret;
+        },
+        ...mapActions([
+            'updateSong',
+        ]),
     },
     watch: {
         keyWord(nv) {
             this._reset();
             if (nv) {
                 this._search(nv);
+            }
+        },
+        outKeyWord(nv) {
+            if (nv) {
+                this.keyWord = nv;
             }
         },
     },
@@ -92,6 +133,15 @@ export default {
 @import "~assets/stylus/variable.styl"
 @import "~assets/stylus/mixin.styl"
 
+.search_panel
+    position absolute
+    left 0
+    right 0
+    top 0
+    z-index 10
+    background $color-background
+    &.full
+        bottom 0
 .search_bar
     display flex
     align-items center
@@ -126,8 +176,8 @@ export default {
     display flex
     align-items center
     padding 25px 0
-    &:nth-child(odd)
-        // background $color-highlight-background
+    &:nth-child(even)
+        background $color-highlight-background
 .item_icon
     flex none
     margin 0 20px 0 40px

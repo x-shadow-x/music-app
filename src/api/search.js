@@ -35,4 +35,24 @@ export function search(keyWord, pageIndex, catZhida = 0) {
     });
 }
 
-export function temp() {}
+export function getHotKey() {
+    const url = `${domain}/getHotKey`;
+    const params = Object.assign({}, commonQuery, {
+        targetDomain: 'https://c.y.qq.com/splcloud/fcgi-bin',
+        routeName: 'gethotkey.fcg',
+        referer: 'https://y.qq.com/m/index.html',
+        uin: 0,
+        platform: 'h5',
+        needNewCode: 1,
+        _: '1550039806114',
+    });
+    return axios.get(url, {
+        params,
+    }).then((response) => {
+        console.info(response.data);
+        return response.data;
+    }).catch((err) => {
+        console.error(err);
+        return err;
+    });
+}

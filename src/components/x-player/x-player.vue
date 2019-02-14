@@ -83,6 +83,7 @@ import { mapGetters, mapMutations } from 'vuex';
 import Scroll from '@/base/scroll/scroll.vue';
 import ProgressBar from '@/base/progress-bar/progress-bar.vue';
 import ProgressCircle from '@/base/progress-circle/progress-circle.vue';
+import { SUCC } from '@/api/config';
 import { getVkey, getLyric } from '@/api/song';
 import LyricParser from '@/helper/lyric-parser';
 import PLAY_MODE from '@/store/config';
@@ -197,7 +198,6 @@ export default {
         },
         updateCurTime(payLoad) {
             this.$refs.audio.currentTime = payLoad;
-            console.info(payLoad, '========');
         },
         handleTimeUpdate(e) {
             this.currentTime = e.target.currentTime;
@@ -255,20 +255,26 @@ export default {
         },
         async _getLyric(songmid) {
             if (songmid) {
-                const res = await getLyric(new Date().getTime, songmid);
-                this.lyric = new LyricParser(res.lyric, (currentTime) => {
-                    const lyrics = this.lyric.lyrics;
-                    for (let i = 0, len = lyrics.length; i < len; i++) {
-                        if (currentTime < lyrics[i].time) {
-                            this.currentLyricIndex = i - 1;
-                            break;
-                        }
+                try {
+                    const res = await getLyric(new Date().getTime, songmid);
+                    if (res.code === SUCC) {
+                        this.lyric = new LyricParser(res.lyric, (currentTime) => {
+                            const lyrics = this.lyric.lyrics;
+                            for (let i = 0, len = lyrics.length; i < len; i++) {
+                                if (currentTime < lyrics[i].time) {
+                                    this.currentLyricIndex = i - 1;
+                                    break;
+                                }
+                            }
+                            const el = this.$refs.lyricItem[this.currentLyricIndex];
+                            if (!this.preventAutoScroll) {
+                                this.$refs.scroll.scrollToElement(el, 300, true, true);
+                            }
+                        }).lyric;
                     }
-                    const el = this.$refs.lyricItem[this.currentLyricIndex];
-                    if (!this.preventAutoScroll) {
-                        this.$refs.scroll.scrollToElement(el, 300, true, true);
-                    }
-                }).lyric;
+                } catch (err) {
+                    console.error(err);
+                }
             }
         },
         ...mapMutations({

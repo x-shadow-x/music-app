@@ -44,7 +44,6 @@ export default {
                 const res = await getSingerDetail(this.singer.singer_mid);
                 if (res.code === SUCC) {
                     this.songs = this._normalizeSongs(res.data.list);
-                    console.info(this.songs);
                 }
             } catch (err) {
                 console.error(err);
