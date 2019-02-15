@@ -158,7 +158,6 @@ export default {
     flex-grow 1
     color $color-text
     margin-left 20px
-    font-size $font-size-medium
 .search_icon,
 .clear_icon
     font-weight lighter
@@ -185,7 +184,6 @@ export default {
     no-wrap()
     flex-grow 1
     padding-right 40px
-    font-size $font-size-medium
 .loading
     justify-content space-around
 </style>

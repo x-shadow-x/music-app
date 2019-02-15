@@ -94,7 +94,6 @@ export default {
     justify-content space-between
     align-items center
     color $color-text
-    font-size $font-size-medium
 .progress_box
     position relative
     flex-grow 1

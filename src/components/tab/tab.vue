@@ -40,7 +40,6 @@ export default {
     display flex
     justify-content space-between
     height 80px
-    font-size: $font-size-medium
 
 .tab_item
     flex 1

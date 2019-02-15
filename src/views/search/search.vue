@@ -39,19 +39,22 @@
                 </div>
             </scroll>
         </div>
+        <modal ref="modal" @confirm="confirm" tip="是否清空历史搜索记录？" />
     </div>
 </template>
 
 <script>
 import { SUCC } from '@/api/config';
 import { getHotKey } from '@/api/search';
-import SearchBox from '@/base/search-box/search-box.vue';
-import Scroll from '@/base/scroll/scroll.vue';
+import modalMixin from '@/mixin/modal-mixin';
 import scrollMixin from '@/mixin/scroll-mixin';
 import { setItem, getItem } from '@/helper/storage';
+import Scroll from '@/base/scroll/scroll.vue';
+import SearchBox from '@/base/search-box/search-box.vue';
 
 export default {
     mixins: [
+        modalMixin,
         scrollMixin,
     ],
     data() {
@@ -81,6 +84,10 @@ export default {
         },
 
         clearHistory() {
+            this.modal.show();
+        },
+
+        confirm() {
             this.historyList = [];
         },
 
@@ -117,8 +124,8 @@ export default {
     },
 
     components: {
-        SearchBox,
         Scroll,
+        SearchBox,
     },
 };
 </script>
@@ -152,7 +159,6 @@ export default {
     color $color-text-d
     border-radius 10px
     margin 20px 0
-    font-size $font-size-medium
     margin-right 20px
     extend-click()
 .history_item

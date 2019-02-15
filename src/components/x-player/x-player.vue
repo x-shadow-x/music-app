@@ -67,7 +67,7 @@
                     </div>
                 </progress-circle>
             </div>
-            <i class="fa fa-music music_icon"></i>
+            <i class="fa fa-music music_icon" @click.stop="showPlayingList"></i>
         </div>
         <audio
             ref="audio"
@@ -75,18 +75,20 @@
             @canplay="handleCanPlay"
             @ended="handleEnded"
             @timeupdate="handleTimeUpdate"></audio>
+        <playing-list ref="playingList" />
     </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import { SUCC } from '@/api/config';
+import { getVkey, getLyric } from '@/api/song';
+import PLAY_MODE from '@/store/config';
+import LyricParser from '@/helper/lyric-parser';
 import Scroll from '@/base/scroll/scroll.vue';
 import ProgressBar from '@/base/progress-bar/progress-bar.vue';
 import ProgressCircle from '@/base/progress-circle/progress-circle.vue';
-import { SUCC } from '@/api/config';
-import { getVkey, getLyric } from '@/api/song';
-import LyricParser from '@/helper/lyric-parser';
-import PLAY_MODE from '@/store/config';
+import PlayingList from '@/components/playing-list/playing-list.vue';
 
 const ICON_MAP = {
     [PLAY_MODE.SEQUENCE]: 'fa-list',
@@ -157,6 +159,9 @@ export default {
         this.slideDis = 0; // 左右滑动切换歌词与唱片页面时手指滑动的水平距离
         this.opacity = 1;
         this.windowWidth = window.innerWidth;
+    },
+    mounted() {
+        this.playingList = this.$refs.playingList;
     },
     methods: {
         retract() {
@@ -245,6 +250,9 @@ export default {
         scrollTouchEnd() {
             this.preventAutoScroll = false;
         },
+        showPlayingList() {
+            this.playingList.show();
+        },
         async _getMusicSrc(songmid) {
             if (songmid) {
                 const res = await getVkey(songmid);
@@ -286,11 +294,13 @@ export default {
         }),
     },
     watch: {
-        currentSong(nv) {
+        currentSong(nv, ov) {
             if (nv && nv.songmid) {
-                const songmid = nv.songmid;
-                this._getMusicSrc(songmid);
-                this._getLyric(songmid);
+                if (!ov || nv.songmid !== ov.songmid) {
+                    const songmid = nv.songmid;
+                    this._getMusicSrc(songmid);
+                    this._getLyric(songmid);
+                }
             }
         },
         musicSrc(nv) {
@@ -313,6 +323,7 @@ export default {
     components: {
         Scroll,
         ProgressBar,
+        PlayingList,
         ProgressCircle,
     },
 };
@@ -359,7 +370,6 @@ header
     font-size $font-size-large
 .singer
     text-align center
-    font-size $font-size-medium
     margin 10px auto 60px auto
 .bg
     position absolute
@@ -411,7 +421,6 @@ header
     height 60vh
     text-align center
     line-height 3
-    font-size $font-size-medium
     mask-image linear-gradient(to bottom,
         rgba(255, 255, 255, 0) 0,
         rgba(255, 255, 255, .2) 15%,
@@ -456,8 +465,6 @@ header
     flex-grow 1
     padding 0 20px
     line-height 1.6
-.min_song_title
-    font-size $font-size-medium
 .min_singer
     font-size $font-size-small
     color $color-text-l

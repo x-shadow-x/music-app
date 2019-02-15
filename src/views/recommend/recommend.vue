@@ -159,7 +159,6 @@ export default {
     flex none
 .diss_text
     flex 1
-    font-size $font-size-medium
     line-height 1.6
 .desc
     margin-top 20px

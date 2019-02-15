@@ -17,10 +17,10 @@
     </div>
 </template>
 <script>
-import MHeader from '@/components/m-header/m-header.vue';
-import Tab from '@/components/tab/tab.vue';
-import XPlayer from '@/components/x-player/x-player.vue';
 import { PM } from '@/router/index';
+import Tab from '@/components/tab/tab.vue';
+import MHeader from '@/components/m-header/m-header.vue';
+import XPlayer from '@/components/x-player/x-player.vue';
 
 export default {
     computed: {
@@ -36,8 +36,8 @@ export default {
         },
     },
     components: {
-        MHeader,
         Tab,
+        MHeader,
         XPlayer,
     },
 };

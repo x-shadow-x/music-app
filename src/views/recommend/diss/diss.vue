@@ -1,6 +1,7 @@
 <template>
     <music-list
         ref="musicList"
+        prev-path="/recommend"
         :songs="songs"
         :title="title"
         :bg-pic="bgPic" />

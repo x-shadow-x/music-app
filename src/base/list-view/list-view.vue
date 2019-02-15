@@ -203,7 +203,6 @@ export default {
     flex-grow 1
     margin-left 20px
     color $color-text-d
-    font-size $font-size-medium
     no-wrap()
 
 .shortcut_list

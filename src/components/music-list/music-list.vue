@@ -265,10 +265,6 @@ header
     line-height 1.8
     margin-left 40px
 
-.song_name
-    font-size $font-size-medium
-
 .song_dec
     color $color-text-d
-    font-size $font-size-medium
 </style>

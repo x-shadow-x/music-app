@@ -7,4 +7,8 @@ export function updateSong({ commit, state }, payload) {
     commit(type.SET_CURRENT_INDEX, payload.currentIndex);
 }
 
-export function temp() {}
+export function updatePlayList({ commit, state }, payload) {
+    commit(type.SET_PLAYING, payload.playing === false ? payload.playing : state.isInit);
+    commit(type.SET_PLAY_LIST, payload.list);
+    commit(type.SET_CURRENT_INDEX, payload.currentIndex);
+}
