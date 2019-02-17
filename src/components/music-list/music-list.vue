@@ -118,7 +118,7 @@ export default {
         },
 
         _adjustScroll(playList) {
-            if (playList.length > 0) {
+            if (playList.length > 0 && this.$refs.scroll) {
                 this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.scroll.refresh();
             }

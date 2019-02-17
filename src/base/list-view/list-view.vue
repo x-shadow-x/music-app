@@ -129,7 +129,7 @@ export default {
             }
         },
         _adjustScroll(playList) {
-            if (playList.length > 0) {
+            if (playList.length > 0 && this.$refs.listView) {
                 this.$refs.listView.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.listView.refresh();
             }

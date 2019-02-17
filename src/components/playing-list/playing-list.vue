@@ -7,8 +7,7 @@
                 <div class="content_box" @click.stop="emptyFn">
                     <div class="top_bar">
                         <div class="play_mode">
-                            <i class="fa fa-list mode_icon" :class="modeIcon" @click="toggleMode"></i>
-                            随机播放
+                            <i class="fa fa-list mode_icon icon" :class="modeIcon" @click="toggleMode"></i>{{modeText}}
                         </div>
                         <i class="fa fa-trash-o clear_all" @click="clear"></i>
                     </div>
@@ -24,9 +23,9 @@
                                     @click.stop="selectSong(index)">
                                     <div class=" ">
                                         <i
-                                            class="fa fa-play-circle-o playing_icon"
+                                            class="icon fa fa-play-circle-o"
                                             v-show="currentIndex == index"></i>
-                                        <i class="blank" v-show="currentIndex != index">空</i>
+                                        <i class="icon blank" v-show="currentIndex != index">空</i>
                                         {{item.songname}}
                                     </div>
                                     <div class="handle_module">
@@ -37,8 +36,17 @@
                             </ul>
                         </scroll>
                     </div>
+                    <button class="add_btn" @click="showAddSongModule = true">
+                        <i class="fa fa-plus icon"></i>添加歌曲到队列
+                    </button>
+                    <button class="close_btn" @click="hide">关闭</button>
                 </div>
             </div>
+        </transition>
+        <transition
+            enter-active-class="animated slideInRight"
+            leave-active-class="animated slideOutRight">
+            <add-song v-if="showAddSongModule" @songPanelHide="showAddSongModule = false" />
         </transition>
         <modal ref="modal" @confirm="confirm" tip="是否清空播放列表？" />
     </hover>
@@ -49,11 +57,21 @@ import modalMixin from '@/mixin/modal-mixin';
 import PLAY_MODE from '@/store/config';
 import Hover from '@/base/hover/hover.vue';
 import Scroll from '@/base/scroll/scroll.vue';
+import AddSong from '@/components/add-song/add-song.vue';
 
 const ICON_MAP = {
-    [PLAY_MODE.SEQUENCE]: 'fa-list',
-    [PLAY_MODE.RANDOM]: 'fa-random',
-    [PLAY_MODE.LOOP]: 'fa-retweet',
+    [PLAY_MODE.SEQUENCE]: {
+        icon: 'fa-list',
+        text: '顺序播放',
+    },
+    [PLAY_MODE.RANDOM]: {
+        icon: 'fa-random',
+        text: '随机播放',
+    },
+    [PLAY_MODE.LOOP]: {
+        icon: 'fa-retweet',
+        text: '单曲循环',
+    },
 };
 const ICON_MAP_LEN = Object.keys(ICON_MAP).length;
 
@@ -65,11 +83,15 @@ export default {
     data() {
         return {
             showModule: false,
+            showAddSongModule: false,
         };
     },
     computed: {
         modeIcon() {
-            return ICON_MAP[this.mode];
+            return ICON_MAP[this.mode].icon;
+        },
+        modeText() {
+            return ICON_MAP[this.mode].text;
         },
         ...mapGetters([
             'mode',
@@ -118,6 +140,7 @@ export default {
         handleTouchHover() {
             this.hide();
         },
+        showAddSongPanel() {},
         emptyFn() {},
         ...mapMutations({
             setMode: 'SET_MODE',
@@ -139,6 +162,7 @@ export default {
     components: {
         Scroll,
         Hover,
+        AddSong,
     },
 };
 </script>
@@ -168,12 +192,12 @@ export default {
     left 0
     right 0
     bottom 0
-    padding 0 40px
     background $color-highlight-background
 .top_bar
     display flex
     justify-content space-between
     align-items center
+    padding 0 40px
     height 100px
 .play_mode
     display inline-flex
@@ -181,12 +205,12 @@ export default {
     align-items center
 .mode_icon
     font-size $font-size-large
-    margin-right 20px
     extend-click()
 .clear_all
     font-size $font-size-large
     extend-click()
 .playing_list_box
+    padding 0 40px
     height 40vh
     color $color-text-l
 .playing_item
@@ -196,8 +220,7 @@ export default {
     height 80px
     &.active
         color $color-text
-.blank,
-.playing_icon
+.icon
     margin-right 10px
 .blank
     color transparent
@@ -208,4 +231,16 @@ export default {
     extend-click()
     & + .handle_icon
         margin-left 40px
+.add_btn
+    color $color-text-l
+    margin 40px auto
+    border 1px solid $color-text-l
+    height 60px
+    border-radius 60px
+    padding 0 30px
+.close_btn
+    width 100%
+    height 100px
+    color $color-text-l
+    background $color-background-d
 </style>

@@ -1,8 +1,13 @@
 <template>
     <div ref="wrapper" class="wrapper">
         <slot></slot>
-        <div class="loading_box" v-show="!data.length">
+        <div class="loading_box" v-show="isLoading">
             <loading />
+        </div>
+        <div class="empty_status" v-show="!isLoading && !data.length">
+            <slot name="empty">
+                <i class="fa fa-frown-o"></i>列表为空
+            </slot>
         </div>
     </div>
 </template>
@@ -14,6 +19,10 @@ import Loading from '@/base/loading/loading.vue';
 export default {
     name: 'scroll',
     props: {
+        isLoading: {
+            type: Boolean,
+            default: true,
+        },
         probeType: {
             type: Number,
             default: 1,
@@ -103,13 +112,22 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+@import "~assets/stylus/variable.styl"
+
 .wrapper
     height 100%
     overflow hidden
-.loading_box
+.loading_box,
+.empty_status
     display flex
-    justify-content center
     width 100%
     height 100%
     align-items center
+    justify-content center
+.empty_status
+    color $color-text-d
+    .fa
+        margin-right 10px
+        font-size $font-size-large-x
+        vertical-align middle
 </style>

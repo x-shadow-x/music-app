@@ -1,12 +1,12 @@
 <template>
-    <div class="search_panel" :class="{ full: searchList.length > 0 }">
+    <div class="search_panel" :class="{ full: keyWord }">
         <div class="search_bar">
             <i class="fa fa-search search_icon"></i>
             <input type="text" class="search_input" placeholder="搜索歌曲" v-model="keyWord">
             <i class="fa fa-times-circle clear_icon" v-if="keyWord" @click="clear"></i>
         </div>
-        <div class="search_result" v-if="keyWord && searchList.length > 0">
-            <scroll ref="scroll" :data="searchList" :pullup="pullup" @scrollEnd="loadMore">
+        <div class="search_result" v-if="keyWord">
+            <scroll ref="scroll" :data="searchList" :pullup="pullup" @scrollEnd="loadMore" :is-loading="isLoading">
                 <ul class="search_list">
                     <li
                         class="search_item"
@@ -22,6 +22,11 @@
                         <i class="fa fa-spinner fa-pulse"></i>
                     </li>
                 </ul>
+                <template slot="empty">
+                    <div class="empty_module">
+                        <i class="fa fa-frown-o"></i>你输得啥玩意~臣妾搜不到
+                    </div>
+                </template>
             </scroll>
         </div>
     </div>
@@ -47,6 +52,7 @@ export default {
             keyWord: '',
             searchList: [],
             hasMore: true,
+            isLoading: true,
         };
     },
     props: {
@@ -82,6 +88,7 @@ export default {
         },
         async _search(keyWord) {
             try {
+                this.isLoading = true;
                 const res = await search(keyWord, this.pageIndex);
                 if (res.code === SUCC) {
                     const list = this._normalizeSongs((res.data && res.data.song && res.data.song.list) || []);
@@ -89,12 +96,13 @@ export default {
                     this.pageIndex += 1;
                     this.hasMore = this.searchList.length < res.data.song.totalnum;
                 }
+                this.isLoading = false;
             } catch (err) {
                 console.error(err);
             }
         },
         _adjustScroll(playList) {
-            if (playList.length > 0) {
+            if (playList.length > 0 && this.$refs.scroll) {
                 this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.scroll.refresh();
             }
@@ -167,7 +175,7 @@ export default {
     position absolute
     left 0
     right 0
-    top 100px
+    top 120px
     bottom 0
 .search_list
     padding 25px 0
@@ -186,4 +194,6 @@ export default {
     padding-right 40px
 .loading
     justify-content space-around
+.empty_module
+    margin-top -30%
 </style>

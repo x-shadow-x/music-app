@@ -32,7 +32,7 @@
                                 v-for="(item, index) in historyList"
                                 :key="item"
                                 @click="selectKey(item)">
-                                {{item}}<i class="fa fa-close" @click.stop="remove(index)"></i>
+                                {{item}}<i class="fa fa-close remove_icon" @click.stop="remove(index)"></i>
                             </li>
                         </ul>
                     </div>
@@ -82,7 +82,6 @@ export default {
             res.splice(index, 1);
             this.historyList = [...res];
         },
-
         clearHistory() {
             this.modal.show();
         },
@@ -103,7 +102,7 @@ export default {
         },
 
         _adjustScroll(playList) {
-            if (playList.length > 0) {
+            if (playList.length > 0 && this.$refs.scroll) {
                 this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.scroll.refresh();
             }
@@ -168,6 +167,6 @@ export default {
     padding-right 10px
     color $color-text-d
     height 80px
-.asd
+.remove_icon
     extend-click()
 </style>
