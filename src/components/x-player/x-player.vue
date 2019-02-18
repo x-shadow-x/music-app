@@ -83,6 +83,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import { SUCC } from '@/api/config';
 import { getVkey, getLyric } from '@/api/song';
+import { setItem, getItem } from '@/helper/storage';
 import PLAY_MODE from '@/store/config';
 import LyricParser from '@/helper/lyric-parser';
 import Scroll from '@/base/scroll/scroll.vue';
@@ -159,6 +160,7 @@ export default {
         this.slideDis = 0; // 左右滑动切换歌词与唱片页面时手指滑动的水平距离
         this.opacity = 1;
         this.windowWidth = window.innerWidth;
+        this.playedList = getItem('SONG_HISTORY') || [];
     },
     mounted() {
         this.playingList = this.$refs.playingList;
@@ -258,6 +260,13 @@ export default {
                 const res = await getVkey(songmid);
                 const data = (res.req_0 && res.req_0.data) || {};
                 const purl = (data.midurlinfo[0] && data.midurlinfo[0].purl) || '';
+                if (!purl) {
+                    this.toast.set({
+                        icon: 'ERR',
+                        tip: '拿不到qq的音乐，换一首试试',
+                    }).show();
+                    return;
+                }
                 this.musicSrc = `http://dl.stream.qqmusic.qq.com/${purl}`;
             }
         },
@@ -285,6 +294,21 @@ export default {
                 }
             }
         },
+        _savePlayingSong(song) {
+            let index = -1;
+            for (let i = 0, len = this.playedList.length; i < len; i++) {
+                const item = this.playedList[i];
+                if (item.songid === song.songid) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0) {
+                this.playedList.splice(index, 1);
+            }
+            this.playedList.unshift(song);
+            setItem('SONG_HISTORY', JSON.stringify(this.playedList));
+        },
         ...mapMutations({
             setFullScreen: 'SET_FULL_SCREEN',
             setPlaying: 'SET_PLAYING',
@@ -296,6 +320,9 @@ export default {
     watch: {
         currentSong(nv, ov) {
             if (nv && nv.songmid) {
+                if (this.playing && this.isInit) {
+                    this._savePlayingSong(nv);
+                }
                 if (!ov || nv.songmid !== ov.songmid) {
                     const songmid = nv.songmid;
                     this._getMusicSrc(songmid);
@@ -314,6 +341,7 @@ export default {
         },
         playing(nv) {
             if (nv && this.musicSrc && this.isInit) {
+                this._savePlayingSong(this.currentSong);
                 this.$refs.audio.play();
             } else if (!nv && this.musicSrc && this.isInit) {
                 this.$refs.audio.pause();

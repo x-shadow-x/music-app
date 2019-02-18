@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { SUCC } from '@/api/config';
 import { getHotKey } from '@/api/search';
 import modalMixin from '@/mixin/modal-mixin';
@@ -71,7 +72,11 @@ export default {
     },
 
     methods: {
-        selectItem(keyWord) {
+        selectItem(song, keyWord) {
+            this.updateSong({
+                list: [song],
+                currentIndex: 0,
+            });
             this.historyList = Array.from(new Set([...this.historyList, keyWord]));
         },
         selectKey(keyWord) {
@@ -109,16 +114,23 @@ export default {
         },
 
         _getHistoryList() {
-            const historyListStr = getItem('HISTORY');
-            if (historyListStr) {
-                this.historyList = `${historyListStr}`.split(',');
+            try {
+                this.historyList = getItem('HISTORY') || [];
+            } catch (err) {
+                this.historyList = [];
             }
         },
+
+        ...mapActions([
+            'updateSong',
+        ]),
     },
 
     watch: {
         historyList(nv) {
-            setItem('HISTORY', nv.join(','));
+            if (nv && nv.length > 0) {
+                setItem('HISTORY', JSON.stringify(nv));
+            }
         },
     },
 

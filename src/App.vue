@@ -14,13 +14,16 @@
             </keep-alive>
         </transition>
         <x-player />
+        <toast ref="toast" />
     </div>
 </template>
 <script>
+import Vue from 'vue';
 import { PM } from '@/router/index';
 import Tab from '@/components/tab/tab.vue';
 import MHeader from '@/components/m-header/m-header.vue';
 import XPlayer from '@/components/x-player/x-player.vue';
+import Toast from '@/base/toast/toast.vue';
 
 export default {
     computed: {
@@ -35,10 +38,14 @@ export default {
             };
         },
     },
+    mounted() {
+        Vue.prototype.toast = this.$refs.toast; // 将吐司组件挂载到全局
+    },
     components: {
         Tab,
         MHeader,
         XPlayer,
+        Toast,
     },
 };
 </script>

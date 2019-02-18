@@ -131,10 +131,27 @@ export default {
         remove(index) {
             const currentIndex = this.currentIndex;
             const playList = [...this.playList];
+            let newIndex = currentIndex;
             playList.splice(index, 1);
+            if (playList.length <= 0) {
+                this.updatePlayList({
+                    list: playList,
+                    currentIndex: 0,
+                    playing: false,
+                });
+                this.hide();
+                return;
+            }
+            if (index === currentIndex) {
+                if (this.mode === PLAY_MODE.RANDOM) {
+                    newIndex = Math.floor(playList.length * Math.random());
+                } else {
+                    newIndex = (currentIndex + 1) % playList.length;
+                }
+            }
             this.updatePlayList({
                 list: playList,
-                currentIndex,
+                currentIndex: newIndex,
             });
         },
         handleTouchHover() {

@@ -10,7 +10,7 @@
                 <ul class="tab">
                     <li
                         class="tab_item"
-                        :class="{ active: currentIndex == item.id }"
+                        :class="{ active: curTabIndex == item.id }"
                         v-for="item in tabList" :key="item.id"
                         @click="toggleTab(item.id)">
                         {{item.text}}
@@ -20,11 +20,11 @@
                     mode="out-in"
                     enter-active-class="animated fadeIn"
                     leave-active-class="animated fadeOut">
-                    <div v-if="currentIndex == 1" class="list_panel" key="1">
-                        <scroll :data="playList">
+                    <div v-if="curTabIndex == 1" class="list_panel" key="1">
+                        <scroll :data="playedList" :is-loading="isLoading">
                             <ul>
                                 <li
-                                    v-for="item in playList"
+                                    v-for="item in playedList"
                                     :key="item.songid"
                                     class="history_song"
                                     @click="selectSong(item)">
@@ -34,7 +34,7 @@
                             </ul>
                         </scroll>
                     </div>
-                    <div v-if="currentIndex == 2" class="list_panel" key="2">
+                    <div v-if="curTabIndex == 2" class="list_panel" key="2">
                         <scroll :data="historyList" :is-loading="isLoading">
                             <ul>
                                 <li
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { setItem, getItem } from '@/helper/storage';
 import Scroll from '@/base/scroll/scroll.vue';
 import SearchBox from '@/base/search-box/search-box.vue';
@@ -76,30 +76,40 @@ export default {
                 text: '搜索历史',
             }],
             outKeyWord: '',
+            playedList: [],
             historyList: [],
-            currentIndex: 1,
+            curTabIndex: 1,
             isLoading: true,
         };
     },
     computed: {
         ...mapGetters([
             'playList',
+            'currentIndex',
         ]),
     },
     mounted() {
         this._getHistoryList();
+        this._getSongHistoryList();
+        this.toast.set({
+            tip: '已添加至播放列表',
+            icon: 'SUCCESS',
+        });
     },
     methods: {
         emptyFn() {},
         toggleTab(id) {
-            this.currentIndex = id;
+            this.curTabIndex = id;
         },
-        selectItem(keyWord) {
-            console.info(keyWord);
-            // this.historyList = Array.from(new Set([...this.historyList, keyWord]));
+        selectItem(song, keyWord) {
+            this._updateSongList(song);
+            this.historyList = Array.from(new Set([...this.historyList, keyWord]));
+        },
+        selectKey(keyWord) {
+            this.outKeyWord = keyWord;
         },
         selectSong(song) {
-            console.info(song);
+            this._updateSongList(song);
         },
         hidePanel() {
             this.$emit('songPanelHide');
@@ -110,16 +120,42 @@ export default {
             this.historyList = [...res];
         },
         _getHistoryList() {
-            const historyListStr = getItem('HISTORY');
-            if (historyListStr) {
-                this.historyList = `${historyListStr}`.split(',');
-            }
+            this.historyList = getItem('HISTORY') || [];
             this.isLoading = false;
         },
+        _getSongHistoryList() {
+            this.playedList = getItem('SONG_HISTORY') || [];
+            this.isLoading = false;
+        },
+        _updateSongList(song) {
+            const list = [...this.playList];
+            let index = -1;
+            for (let i = 0, len = list.length; i < len; i++) {
+                const item = list[i];
+                if (item.songid === song.songid) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0) {
+                list.splice(index, 1);
+            }
+            list.unshift(song);
+            this.updateSong({
+                list,
+                currentIndex: index === 0 ? this.currentIndex : this.currentIndex + 1,
+            });
+            this.toast.show();
+        },
+        ...mapActions([
+            'updateSong',
+        ]),
     },
     watch: {
         historyList(nv) {
-            setItem('HISTORY', nv.join(','));
+            if (nv) {
+                setItem('HISTORY', JSON.stringify(nv));
+            }
         },
     },
     components: {
@@ -192,8 +228,7 @@ export default {
     overflow hidden
     padding 0 40px
 .history_song
-    & + .history_song
-        margin-top 40px
+    margin-bottom 40px
 .song_name,
 .singer_info
     no-wrap()

@@ -1,10 +1,10 @@
 <template>
     <div ref="wrapper" class="wrapper">
         <slot></slot>
-        <div class="loading_box" v-show="isLoading">
+        <div class="loading_box" v-show="isLoading && !data.length">
             <loading />
         </div>
-        <div class="empty_status" v-show="!isLoading && !data.length">
+        <div class="empty_status" v-show="!isLoading && !data.length && !Object.keys(data).length">
             <slot name="empty">
                 <i class="fa fa-frown-o"></i>列表为空
             </slot>
@@ -40,7 +40,7 @@ export default {
             default: false,
         },
         data: {
-            type: Array,
+            type: [Array, Object],
             default: () => [],
         },
     },

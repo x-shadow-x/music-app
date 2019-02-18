@@ -38,8 +38,6 @@ import { search } from '@/api/search';
 import Scroll from '@/base/scroll/scroll.vue';
 import createSong from '@/type/song';
 import scrollMixin from '@/mixin/scroll-mixin';
-import { mapActions } from 'vuex';
-
 
 export default {
     name: 'searchBox',
@@ -69,11 +67,7 @@ export default {
             this.keyWord = '';
         },
         selectItem(item) {
-            this.updateSong({
-                list: [item],
-                currentIndex: 0,
-            });
-            this.$emit('selectItem', this.keyWord);
+            this.$emit('selectItem', item, this.keyWord);
         },
         async loadMore() {
             if (!this.hasMore) {
@@ -114,9 +108,6 @@ export default {
             });
             return ret;
         },
-        ...mapActions([
-            'updateSong',
-        ]),
     },
     watch: {
         keyWord(nv) {
