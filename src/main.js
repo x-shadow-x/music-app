@@ -1,12 +1,18 @@
 import Vue from 'vue';
 import fastclick from 'fastclick';
 import VueLazyload from 'vue-lazyload';
-import App from './App.vue';
+import Vconsole from 'vconsole';
 import router from './router/index';
 import store from './store/index';
 import './assets/stylus/index.styl';
 import './registerServiceWorker';
+import App from './App.vue';
 import Modal from '@/base/modal/modal.vue';
+
+if (process.env.NODE_ENV === 'development') {
+    /* eslint-disable no-unused-vars */
+    const vConsole = new Vconsole();
+}
 
 const loadingImg = require('assets/images/common/logo.png');
 

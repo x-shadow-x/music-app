@@ -29,7 +29,7 @@
                             <li class="balance_line"></li>
                             <li
                                 v-for="(item, index) in lyric.lyrics"
-                                :key="item.time"
+                                :key="index"
                                 :class="{active : currentLyricIndex == index}"
                                 ref="lyricItem">{{item.lyric}}</li>
                             <li class="balance_line"></li>
@@ -201,7 +201,11 @@ export default {
             !this.playing && this.togglePlay();
         },
         handleCanPlay() {
-            this.canPlay = true;
+            // 增加一个延时，防止用户快速切换歌曲导致的
+            // Uncaught (in promise) DOMException: The play() request was interrupted by a new load request 错误
+            setTimeout(() => {
+                this.canPlay = true;
+            }, 100);
         },
         updateCurTime(payLoad) {
             this.$refs.audio.currentTime = payLoad;

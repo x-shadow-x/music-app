@@ -2,6 +2,7 @@
     <music-list
         ref="musicList"
         prev-path="/singer"
+        @play="handlePlay"
         :songs="songs"
         :title="title"
         :bg-pic="bgPic" />
@@ -36,7 +37,9 @@ export default {
     },
 
     methods: {
-
+        handlePlay() {
+            this.xPlay.togglePlay();
+        },
         async _getSingerDetail() {
             try {
                 if (!this.singer.singer_mid) {

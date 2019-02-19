@@ -6,7 +6,7 @@ const RankDetail = () => import(/* webpackChunkName: "rankDetail" */ '@/views/ra
 const Recommend = () => import(/* webpackChunkName: "recommend" */ '@/views/recommend/recommend.vue');
 const Diss = () => import(/* webpackChunkName: "diss" */ '@/views/recommend/diss/diss.vue');
 const Search = () => import(/* webpackChunkName: "search" */ '@/views/search/search.vue');
-const Singer = () => import(/* webpackChunkName: "singers" */ '@/views/singer/singer.vue');
+const Singer = () => import(/* webpackChunkName: "singer" */ '@/views/singer/singer.vue');
 const SingerDetail = () => import(/* webpackChunkName: "singer" */ '@/views/singer/singer-detail/singer-detail.vue');
 
 Vue.use(PageRouter);

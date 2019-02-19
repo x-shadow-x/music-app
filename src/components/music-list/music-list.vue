@@ -46,9 +46,10 @@
 </template>
 
 <script>
-import Scroll from '@/base/scroll/scroll.vue';
+import PLAY_MODE from '@/store/config';
 import scrollMixin from '@/mixin/scroll-mixin';
 import { mapActions, mapGetters } from 'vuex';
+import Scroll from '@/base/scroll/scroll.vue';
 
 export default {
     mixins: [
@@ -107,7 +108,11 @@ export default {
         },
 
         play() {
-            console.info(this.isInit);
+            this.updateSong({
+                list: this.songs,
+                currentIndex: Math.floor(this.songs.length * Math.random()),
+            });
+            this.$emit('play', PLAY_MODE.RANDOM);
         },
 
         select(index) {

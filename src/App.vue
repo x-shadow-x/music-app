@@ -13,7 +13,7 @@
                 <router-view class="transition_view"></router-view>
             </keep-alive>
         </transition>
-        <x-player />
+        <x-player ref="xPlay" />
         <toast ref="toast" />
     </div>
 </template>
@@ -40,6 +40,7 @@ export default {
     },
     mounted() {
         Vue.prototype.toast = this.$refs.toast; // 将吐司组件挂载到全局
+        Vue.prototype.xPlay = this.$refs.xPlay; // 将吐司组件挂载到全局
     },
     components: {
         Tab,
