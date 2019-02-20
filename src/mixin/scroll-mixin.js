@@ -17,6 +17,7 @@ const scrollMixin = {
 
     watch: {
         playList(nv) {
+            console.info(123123123);
             this._adjustScroll(nv);
         },
     },

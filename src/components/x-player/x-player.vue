@@ -36,6 +36,8 @@
                         </ul>
                     </scroll>
                 </div>
+                <img src="./images/left_arrow.png" alt="左箭头" class="arrow_tip left_arrow">
+                <img src="./images/right_arrow.png" alt="右箭头" class="arrow_tip right_arrow">
             </div>
             <div class="control_module">
                 <div class="progress_module">
@@ -175,12 +177,12 @@ export default {
         toggleMode() {
             this.setMode((this.mode + 1) % ICON_MAP_LEN);
         },
-        togglePlay() {
+        togglePlay(playing) {
             if (!this.isInit) {
                 this.$refs.audio.play();
                 this.setIsInit(true);
             }
-            this.setPlaying(!this.playing);
+            this.setPlaying(typeof playing === 'boolean' ? playing : !this.playing);
         },
         prevSong() {
             if (!this.canPlay) {
@@ -421,6 +423,29 @@ header
     display flex
     flex-wrap nowrap
     overflow hidden
+    position relative
+.arrow_tip
+    position absolute
+    top 50%
+    transform translateY(-50%)
+    width 50px
+    opacity .5
+.left_arrow
+    left 10px
+    animation leftAnimate 1s infinite alternate
+.right_arrow
+    right 10px
+    animation rightAnimate 1s infinite alternate
+@keyframes leftAnimate
+    0%
+        left 20px
+    100%
+        left 10px
+@keyframes rightAnimate
+    0%
+        right 20px
+    100%
+        right 10px
 .dish_module
     width 100%
     flex none

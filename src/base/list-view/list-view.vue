@@ -132,6 +132,9 @@ export default {
             if (playList.length > 0 && this.$refs.listView) {
                 this.$refs.listView.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.listView.refresh();
+            } else {
+                this.$refs.listView.$el.style.height = '100%';
+                this.$refs.listView.refresh();
             }
         },
     },

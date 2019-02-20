@@ -38,7 +38,7 @@ export default {
 
     methods: {
         handlePlay() {
-            this.xPlay.togglePlay();
+            this.xPlay.togglePlay(true);
         },
         async _getSingerDetail() {
             try {

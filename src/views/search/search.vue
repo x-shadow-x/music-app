@@ -110,6 +110,9 @@ export default {
             if (playList.length > 0 && this.$refs.scroll) {
                 this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
                 this.$refs.scroll.refresh();
+            } else {
+                this.$refs.scroll.$el.style.height = '100%';
+                this.$refs.scroll.refresh();
             }
         },
 

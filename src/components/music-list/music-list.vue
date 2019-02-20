@@ -22,8 +22,7 @@
                     @scroll="scroll">
                     <div>
                         <button class="play_btn" v-show="songs.length > 0" @click="play">
-                            <i class="fa fa-play-circle-o play_icon"></i>
-                            随机播放全部
+                            <i class="fa fa-play-circle-o play_icon"></i>随机播放全部
                         </button>
                         <ul class="music_list">
                             <li
@@ -125,6 +124,9 @@ export default {
         _adjustScroll(playList) {
             if (playList.length > 0 && this.$refs.scroll) {
                 this.$refs.scroll.$el.style.height = 'calc(100% - 70px)';
+                this.$refs.scroll.refresh();
+            } else {
+                this.$refs.scroll.$el.style.height = '100%';
                 this.$refs.scroll.refresh();
             }
         },
