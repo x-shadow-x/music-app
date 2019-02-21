@@ -464,7 +464,7 @@ header
     overflow hidden
     border-radius 100%
     box-sizing border-box
-    border 20px solid $color-dialog-background
+    border 20px solid #666
     animation rotateAnimate 8s linear infinite
     &.pause
         animation-play-state paused
@@ -510,7 +510,7 @@ header
 .min_player
     display flex
     align-items center
-    background $color-highlight-background
+    background $color-highlight-ld
     padding 10px 40px
 .min_dish_img
     width 80px
@@ -523,8 +523,8 @@ header
     padding 0 20px
     line-height 1.6
 .min_singer
-    font-size $font-size-small
-    color $color-text-l
+    font-size $font-size-small-x
+    color $color-text-ll
 .min_progress_module
     width 80px
     height 80px

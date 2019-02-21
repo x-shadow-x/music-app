@@ -125,7 +125,7 @@ export default {
     align-items center
     justify-content center
 .empty_status
-    color $color-text-d
+    color $color-text-l
     .fa
         margin-right 10px
         font-size $font-size-large-x

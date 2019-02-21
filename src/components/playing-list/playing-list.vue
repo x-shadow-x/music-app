@@ -209,7 +209,7 @@ export default {
     left 0
     right 0
     bottom 0
-    background $color-highlight-background
+    background $color-highlight-ld
 .top_bar
     display flex
     justify-content space-between
@@ -229,7 +229,7 @@ export default {
 .playing_list_box
     padding 0 40px
     height 40vh
-    color $color-text-l
+    color $color-text-ll
 .playing_item
     display flex
     justify-content space-between
@@ -249,15 +249,15 @@ export default {
     & + .handle_icon
         margin-left 40px
 .add_btn
-    color $color-text-l
+    color $color-text-ll
     margin 40px auto
-    border 1px solid $color-text-l
+    border 1px solid $color-text-ll
     height 60px
     border-radius 60px
     padding 0 30px
 .close_btn
     width 100%
     height 100px
-    color $color-text-l
+    color $color-text-ll
     background $color-background-d
 </style>

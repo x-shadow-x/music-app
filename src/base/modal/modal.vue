@@ -100,8 +100,8 @@ export default {
     width 80%
     border-radius 20px
     padding-top 30px
-    color $color-text-ll
-    background $color-highlight-background
+    color $color-text-lll
+    background $color-highlight-ld
     text-align center
     font-size $font-size-medium
 .tip
@@ -123,7 +123,7 @@ export default {
         width 1px
         background $color-background-d
 .cancel_btn
-    color $color-text-d
+    color $color-text-l
 .confirm_btn
-    color $color-text-ll
+    color $color-text-lll
 </style>

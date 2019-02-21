@@ -273,5 +273,5 @@ header
     margin-left 40px
 
 .song_dec
-    color $color-text-d
+    color $color-text-l
 </style>

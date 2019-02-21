@@ -24,6 +24,6 @@ export default {
     width 40px
 .desc
     line-height 2.4
-    font-size $font-size-small
-    color $color-text-l
+    font-size $font-size-small-x
+    color $color-text-ll
 </style>

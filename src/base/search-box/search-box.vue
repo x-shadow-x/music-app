@@ -149,7 +149,7 @@ export default {
     align-items center
     height 80px
     border-radius 10px
-    background $color-highlight-background
+    background $color-highlight-ld
     margin 20px 20px 0 20px
     padding 0 20px
 .search_input
@@ -163,7 +163,7 @@ export default {
 .search_icon,
 .clear_icon
     font-weight lighter
-    color $color-dark
+    color $color-black
     extend-click()
 .search_result
     position absolute
@@ -178,7 +178,7 @@ export default {
     align-items center
     padding 25px 0
     &:nth-child(even)
-        background $color-highlight-background
+        background $color-highlight-ld
 .item_icon
     flex none
     margin 0 20px 0 40px

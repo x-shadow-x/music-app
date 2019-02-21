@@ -57,8 +57,8 @@ circle
     stroke-width: 4pt
     transform-origin: center
 .circle_in
-    stroke: $color-lowlight-background
+    stroke: $color-background-lowlight
 .progress
     transform rotate(270deg)
-    stroke: $color-light-background
+    stroke: $color-background-light
 </style>

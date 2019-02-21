@@ -157,7 +157,7 @@ export default {
     display flex
     justify-content space-between
     padding 40px 10px 20px 0
-    color $color-text-l
+    color $color-text-ll
 .clear_all
     extend-click()
 .module_title
@@ -169,8 +169,8 @@ export default {
     display inline-block
     padding 10px 20px
     white-space nowrap
-    background $color-highlight-background
-    color $color-text-d
+    background $color-highlight-ld
+    color $color-text-l
     border-radius 10px
     margin 20px 0
     margin-right 20px
@@ -180,7 +180,7 @@ export default {
     justify-content space-between
     align-items center
     padding-right 10px
-    color $color-text-d
+    color $color-text-l
     height 80px
 .remove_icon
     extend-click()

@@ -209,7 +209,7 @@ export default {
     justify-content space-around
     width 80%
     margin 30px auto
-    border: 1px solid $color-highlight-background
+    border: 1px solid $color-highlight-ld
     border-radius 10px
     height 60px
     overflow hidden
@@ -218,10 +218,10 @@ export default {
     display inline-flex
     justify-content center
     align-items center
-    color $color-text-l
+    color $color-text-ll
     &.active
         color $color-text
-        background $color-highlight-background
+        background $color-highlight-ld
 .list_panel
     flex-basis 0
     flex-grow 1
@@ -234,14 +234,14 @@ export default {
     no-wrap()
 .singer_info
     margin-top 20px
-    color $color-text-l
-    font-size $font-size-small
+    color $color-text-ll
+    font-size $font-size-small-x
 .search_history_item
     display flex
     justify-content space-between
     align-items center
     padding-right 10px
-    color $color-text-d
+    color $color-text-l
     height 80px
 .remove_icon
     extend-click()

@@ -165,6 +165,6 @@ export default {
     line-height 1.6
 .desc
     margin-top 20px
-    font-size $font-size-small
-    color $color-text-d
+    font-size $font-size-small-x
+    color $color-text-l
 </style>

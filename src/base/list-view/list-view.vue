@@ -185,7 +185,7 @@ export default {
 
 .group_tag
     font-size $font-size-medium
-    background $color-highlight-background
+    background $color-highlight-ld
     line-height 80px
     padding-left 20px
 
@@ -205,7 +205,7 @@ export default {
     flex-basis 0
     flex-grow 1
     margin-left 20px
-    color $color-text-d
+    color $color-text-l
     no-wrap()
 
 .shortcut_list
@@ -216,9 +216,9 @@ export default {
     display flex
     flex-direction column
     align-items center
-    font-size $font-size-small-s
+    font-size $font-size-small
     background $color-background-d
-    color $color-text-l
+    color $color-text-ll
     border-radius 22px
     padding 12px 0
     z-index 2

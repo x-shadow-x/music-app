@@ -114,7 +114,7 @@ export default {
     top 0
     height 100%
     border-radius 6px
-    background $color-light-background
+    background $color-background-light
 .progress_dot
     position absolute
     right -10px

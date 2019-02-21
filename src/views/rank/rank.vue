@@ -102,11 +102,11 @@ export default {
     display flex
     align-items center
     padding 20px
-    font-size $font-size-small
-    background $color-highlight-background
+    font-size $font-size-small-x
+    background $color-highlight-ld
 .song_item
     width 100%
-    color $color-text-d
+    color $color-text-l
     line-height 2
     no-wrap()
 </style>
