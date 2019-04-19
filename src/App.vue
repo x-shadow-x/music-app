@@ -54,11 +54,17 @@ export default {
 <style lang="stylus">
 @import "~assets/stylus/variable.styl"
 @import "~assets/stylus/animate.styl"
+// .main
+//     position fixed
+//     width 100%
+//     top 172px
+//     bottom 0
+//     background $color-background
+//     overflow hidden
 .main
-    position fixed
+    position relative
     width 100%
-    top 172px
-    bottom 0
+    height calc(100vh - 172px)
     background $color-background
     overflow hidden
 </style>

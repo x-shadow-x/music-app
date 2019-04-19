@@ -1,30 +1,30 @@
 .normal_enter
-    transform translateX(20px)
+    transform translateX(70%)
     opacity 0
 
 .normal_leave-to
-    transform translateX(-20px)
+    transform translateX(-70%)
     opacity 0
 
 .normal_enter-active
-    transition all .24s .24s
+    transition all .32s .32s linear
 
 .normal_leave-active
-    transition all .24s
+    transition all .32s linear
 
 .pre_normal_enter
-    transform translateX(-20px)
+    transform translateX(-70%)
     opacity 0
 
 .pre_normal_leave-to
-    transform translateX(20px)
+    transform translateX(70%)
     opacity 0
 
 .pre_normal_enter-active
-    transition all .24s .24s
+    transition all .32s .32s linear
 
 .pre_normal_leave-active
-    transition all .24s
+    transition all .32s linear
 
 .slide_enter,
 .slide_leave-to
@@ -36,4 +36,4 @@
 
 .slide_enter-active,
 .slide_leave-active
-    transition all .24s
+    transition all .32s
