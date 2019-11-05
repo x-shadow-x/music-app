@@ -103,7 +103,7 @@ export default {
         },
 
         back() {
-            this.$router.replace(this.prevPath);
+            this.$router.back(-1);
         },
 
         play() {
